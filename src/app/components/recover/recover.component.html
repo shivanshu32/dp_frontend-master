@@ -1,0 +1,48 @@
+<div class="body_wrap">
+    <div class="side-left">
+        <div class="form-sec">
+            <div class="logo">
+                <a href="javascript:;" routerLink="/login" title=""><img src="assets/images/logo.png" alt=""></a>
+            </div>
+            <h1>Recover Account</h1>
+            <form [formGroup]="form" (submit)="submit()">
+                <div class="from-fields">
+                    <label for="pass">Password</label>
+                    <input type="password" formControlName="password" placeholder="" id="pass">
+                    <label class="text-danger mt-2 text-left" *ngIf="!form.controls.password.valid && (form.controls.password.touched || form.controls.password.dirty)">Required min 8 characters</label>
+                </div>
+                <div class="from-fields">
+                    <label for="pass2">Confirm Password</label>
+                    <input type="password" formControlName="password_confirmation" placeholder="" id="pass2">
+                    <label class="text-danger mt-2 text-left"
+                        *ngIf="!form.controls.password_confirmation.valid && (form.controls.password_confirmation.touched || form.controls.password_confirmation.dirty)">Value should match the password field</label>
+                </div>
+                <div class="from-fields">
+                    <button [disabled]="!form.valid" class="btn btn-large" type="submit">Submit<span *ngIf="isLoading">&nbsp;<i class="fa fa-spinner fa-spin"></i></span></button>
+                </div>
+            </form>
+            <div class="have-account d-none">
+                <span>Don’t have an account yet? <a href="#" title=""> Create an account</a></span>
+            </div>
+
+        </div>
+    </div>
+    <div class="side-right">
+        <h3>We are committed to delivering a high quality product at a low and affordable price.</h3>
+        <img src="assets/images/resource/mockup.png" alt="">
+        <div class="account-bottom">
+            <div class="float-left w-100">
+                <div class="quick-acount-info">
+                    <h4>Contact Us</h4>
+                    <span>(310) 916 - 9514</span>
+                    <span>support@districtprinting.com</span>
+                </div>
+                <div class="quick-acount-info">
+                    <h4>Monday - Friday</h4>
+                    <span>9am - 5pm (BY APPOINTMENT ONLY)</span>
+                    <span>4722 Normandie Ave Los Angeles, CA 90037</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Body Wrap -->

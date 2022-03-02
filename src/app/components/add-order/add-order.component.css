@@ -1,0 +1,46 @@
+div#client_list {
+    width: 300px;
+    box-shadow: 0 5px 5px rgba(0,0,0,.1),0 10px 10px rgba(0,0,0,.1);
+}
+
+div#list_of_clients {
+    max-height: 300px;
+    overflow: auto;
+}
+
+#client_list span.dropdown-header {
+    font-weight: bold;
+    font-size: 105%;
+    padding: 0 1.5rem;
+}
+
+#input.ng-pristine.ng-valid.ng-touched {}
+
+#client_selector input.ng-pristine.ng-valid.ng-touched {
+    float: none;
+    width: unset;
+    border-radius: 0 5px 5px 0;
+    flex:1 1 auto;
+}
+
+#list_of_clients .dropdown-item {
+    white-space: normal;
+}
+
+div#tracking_url textarea {
+    /* margin-top: -20px; */
+    min-height: 25px;
+    padding: 10px 20px 0;
+}
+
+#qrCodeDialog {
+    z-index: -1;
+}
+
+span#order_name {
+    font: normal 50% Arial Narrow;
+}
+
+#pdfContainer h1 {
+    line-height: 100%;
+}

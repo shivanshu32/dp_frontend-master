@@ -1,0 +1,32 @@
+<div class="dashboard-header">
+    <h1 class="logo-text">District Printing & Embroidery, INC</h1>
+    <div class="dash-head-user" *ngIf="user !== null">
+        <span class="open-menu"><i class="fa fa-bars"></i></span>
+        <div class="dash-multi-links"> 
+            <span class="close-menu"><i class="fa fa-close"></i></span>
+
+            <a href="javascript:;" routerLink="/administrator" title="">Dashboard</a>
+            <a href="javascript:;" routerLink="/checklist" title="" id='checklist_link'>Checklist</a>
+
+            <a href="javascript:;" routerLink="/artwork" title="" *ngIf="user.role === 'Admin'">Artwork</a>
+            <a href="javascript:;" routerLink="/purchasing" title="" *ngIf="user.role === 'Admin'">Purchasing</a>
+            <a href="javascript:;" routerLink="/view-calendar-resources" *ngIf="user.role === 'Admin' || user.role==='Production'" title="">Resources</a>
+            <a href="javascript:;" routerLink="/view-calendar" *ngIf="user.role === 'Admin' || user.role === 'Production'" title="">Calendar</a>
+            <a href="javascript:;" routerLink="/add-order" title="" *ngIf="user.role === 'Customer'">New Order</a>
+            <a href="/client-orders?status=open" title="" *ngIf="user.role === 'Customer'">Open Order</a>
+            <a href="/client-orders?status=completed" title="" *ngIf="user.role === 'Customer'">Completed Orders</a>
+        </div>
+        <div class="dropdown">
+            <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <img src="assets/images/resource/user.png" alt="">
+                <span>{{user.first_name}} {{user.last_name}}</span>
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="javascript:;" routerLink="/profile">Setting</a>
+                <a class="dropdown-item" href="javascript:;" (click)="logout()">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dashboard Header -->

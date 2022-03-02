@@ -1,0 +1,354 @@
+<div class="main-wrap">
+    <app-navbar></app-navbar>
+    <div class="section-wrap pb-3 float-left w-100">
+        <div class="float-left w-100 mb-4">
+            <div class="row less-row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="row">
+                                <!-- Clear filters button -->
+                                <div class="col mt-3 n-m-t">
+                                    <button title="Clear Filters" style="margin-left: 0" class="btn c-btn-primary c-btn-secondary create-order-btn-r c-btn-info" type="button" (click)="clearFilters()">
+                                      <span>
+                                        <i class="fa fa-refresh" style="color: Tomato"></i>
+                                      </span>
+                                    </button>
+                                </div>
+                                <!-- End -->
+
+                                <!-- Search Input -->
+                                <div class="col mt-3 n-m-t" style="flex-grow: 10">
+                                    <div class="c-input">
+                                        <input appAutofocus type="text" placeholder="Search" [(ngModel)]="search" (keyup.enter)="handleSearch()" (ngModelChange)="handleSearch()" />
+                                    </div>
+                                </div>
+                                <!-- End -->
+
+                                <!-- Search Button -->
+                                <button class="search-btn mt-3 n-m-t only-here" type="button" (click)="handleSearch()">
+                                  <img src="assets/images/resource/icons/icon-search.png" />
+                                </button>
+                                <!-- End -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="row less-row">
+                        <!-- Sale Selector -->
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select class="form-control normal-select" [(ngModel)]="search_salesRep" (change)="handleSearch()">
+                                  <option value="">All Sales</option>
+                                  <option *ngFor="let item of salesReps" [value]="item.id">{{item.first_name}} {{item.last_name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- End -->
+
+                        <!-- Order Status Select -->
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select class="form-control normal-select" [(ngModel)]="search_orderStatus" (change)="handleSearch()">
+                                  <option value="">All</option>
+                                  <option value="Production">Production</option>
+                                  <option value="Processing">Processing</option>
+                                  <option value="Completed">Completed</option>
+                                  <option value="Shipping">Shipping</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- End -->
+
+                        <!-- Printer Name Select -->
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select class="form-control normal-select" [(ngModel)]="search_printer" (change)="handleSearch()">
+                                  <option value="" selected disabled>Printer Name</option>
+                                  <option *ngFor="let item of printers" value="{{ item.id }}">
+                                    {{ item.title }}
+                                  </option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- End -->
+
+                        <!-- Order Type Select -->
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select class="form-control normal-select" [(ngModel)]="search_orderType" (change)="handleSearch()">
+                                  <option value="" selected disabled>Order Type</option>
+                                  <option value="screen_printing">Screen Printing</option>
+                                  <option value="direct_to_garment">Direct To Garment</option>
+                                  <option value="embroidery">Embroidery</option>
+                                  <option value="order_others">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- End -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="c-datatable" *ngIf="!isLoading">
+            <div class="table-responsive">
+                <!-- Table -->
+                <table id="myTable">
+                    <thead>
+                        <tr>
+                            <th>ID#</th>
+                            <th>Job Name<br />Customer</th>
+                            <th class="text-center">Intro Email</th>
+                            <th class="text-center">Send Proof</th>
+                            <th class="text-center">Proof Aprvd<br />/Uploaded</th>
+                            <th class="text-center">Turnaround</th>
+                            <th class="text-center">Shipping Method</th>
+                            <th class="text-center">Rush Shipping Paid</th>
+                            <th class="text-center">Notes</th>
+                            <th class="text-center">Follow Up</th>
+                            <th class="text-center">Apparel Type</th>
+                            <th class="text-center">Color</th>
+                            <th>Sizes</th>
+                            <th class="text-center">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of orders; let i = index">
+                            <td>{{ order.id }}</td>
+                            <td>
+                                {{ order.name }}<br /><small>{{ order.customer_name }}</small>
+                                <br *ngIf="order.invoice_number"><small *ngIf="order.invoice_number"><strong>{{ order.invoice_number }}</strong></small>
+                            </td>
+                            <td class="text-center">
+                                <div class="centered">
+                                    <div [ngClass]="{'circle-red': order.s_intro_email === 'false', 'circle-green': order.s_intro_email === 'true'}" (click)="onUpdateDot(i, 's_intro_email')"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="centered">
+                                    <div [ngClass]="{'circle-red': order.s_send_proof === 'false', 'circle-green': order.s_send_proof === 'true'}" (click)="onUpdateDot(i, 's_send_proof')"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="centered">
+                                    <div [ngClass]="{'circle-red': order.s_proof_approved === 'false', 'circle-green': order.s_proof_approved === 'true'}" (click)="onUpdateDot(i, 's_proof_approved')"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                Created: {{ order.created_at | dateAgo }}<br/>
+                                <small>({{ getArrivalType(order.arrival_type) }})</small><br/> {{ getDueInfo(order.arrival_date) }}<br/>
+                                <small>({{order.hard_due_date == 1 ? "Hard due date" : "Soft due date"}})</small>
+                            </td>
+                            <td class="text-center">
+                                {{getShippingMethod(order.ship_type)}}
+                            </td>
+                            <td class="text-center">
+                                <div class="centered">
+                                    <div [ngClass]="{'circle-red': order.s_rush_shipping_paid === 'false', 'circle-green': order.s_rush_shipping_paid === 'true'}" (click)="onUpdateDot(i, 's_rush_shipping_paid')"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="flex-container">
+                                    <textarea class="form-control" value="{{ order.type_notes }}" id="type_notes_{{ order.id }}">{{order.type_notes}}</textarea>
+                                    <a href="javascript:;" class="btn c-btn-primary c-sm square ml-2" (click)="updateOrderStatus(order.id, 'type_notes')">Save</a>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="centered">
+                                    <div [ngClass]="{'circle-red': order.s_follow_up === 'false', 'circle-green': order.s_follow_up === 'true'}" (click)="onUpdateDot(i, 's_follow_up')"></div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div>
+                                    <ng-container *ngFor="let item of getProductsFromOrder(order);let i=index">
+                                        <div *ngIf="shouldShowThisProduct(item)" class="productRow">
+                                            <div>
+                                                <span class="productsSpan">{{ item["apparel_type_" + (i + 1)] | titlecase }}</span>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div>
+                                    <ng-container *ngFor="let item of getProductsFromOrder(order);let i=index">
+                                        <div *ngIf="shouldShowThisProduct(item)" class="productRow">
+                                            <div>
+                                                <span class="productsSpan">{{ item["product_color_" + (i + 1)] | titlecase }}</span>
+                                            </div>
+                                        </div>
+                                    </ng-container>
+                                </div>
+                            </td>
+                            <td>
+                                <ng-container *ngFor="
+                                let item of getProductsFromOrder(order);
+                                let i = index
+                              ">
+                                    <div *ngIf="shouldShowThisProduct(item)" class="productRow">
+                                        <div>
+                                            <span class="productsSpan" *ngIf="item['xs_' + (i + 1)]">
+                                    <strong>XS:</strong>
+                                    {{
+                                      item["xs_" + (i + 1)] ? item["xs_" + (i + 1)] : "-"
+                                    }}</span
+                                  >
+                                  <span class="productsSpan" *ngIf="item['s_' + (i + 1)]"
+                                    ><strong>S:</strong>
+                                    {{
+                                      item["s_" + (i + 1)] ? item["s_" + (i + 1)] : "-"
+                                    }}</span
+                                  >
+                                  <span class="productsSpan" *ngIf="item['m_' + (i + 1)]"
+                                    ><strong>M:</strong>
+                                    {{
+                                      item["m_" + (i + 1)] ? item["m_" + (i + 1)] : "-"
+                                    }}</span
+                                  >
+                                  <span class="productsSpan" *ngIf="item['l_' + (i + 1)]"
+                                    ><strong>L:</strong>
+                                    {{
+                                      item["l_" + (i + 1)] ? item["l_" + (i + 1)] : "-"
+                                    }}</span
+                                  >
+                                  <span class="productsSpan" *ngIf="item['xl_' + (i + 1)]"
+                                    ><strong>XL:</strong>
+                                    {{
+                                      item["xl_" + (i + 1)] ? item["xl_" + (i + 1)] : "-"
+                                    }}</span
+                                  >
+                                  <span class="productsSpan" *ngIf="item['xxl_' + (i + 1)]"
+                                    ><strong>XXL:</strong>
+                                    {{
+                                      item["xxl_" + (i + 1)] ? item["xxl_" + (i + 1)] : "-"
+                                    }}</span
+                                  >
+                                  <span class="productsSpan" *ngIf="item['xxxl_' + (i + 1)]"
+                                    ><strong>XXXL:</strong>
+                                    {{
+                                      item["xxxl_" + (i + 1)]
+                                        ? item["xxxl_" + (i + 1)]
+                                        : "-"
+                                    }}</span
+                                  >
+                                  <span
+                                    class="productsSpan"
+                                    *ngIf="item['other_size_1_' + (i + 1)]"
+                                    ><strong>{{
+                                      item["other_size_1_" + (i + 1)]
+                                        ? item["other_size_1_" + (i + 1)] + ":"
+                                        : "OS1:"
+                                    }}</strong>
+                                    {{
+                                      item["pcs_1_" + (i + 1)]
+                                        ? item["pcs_1_" + (i + 1)]
+                                        : "-"
+                                    }}</span
+                                  >
+                                  <span
+                                    class="productsSpan"
+                                    *ngIf="item['other_size_2_' + (i + 1)]"
+                                    ><strong>
+                                      {{
+                                        item["other_size_2_" + (i + 1)]
+                                          ? item["other_size_2_" + (i + 1)] + ":"
+                                          : "OS2:"
+                                      }}
+                                    </strong>
+                                    {{
+                                      item["pcs_2_" + (i + 1)]
+                                        ? item["pcs_2_" + (i + 1)]
+                                        : "-"
+                                    }}</span
+                                  >
+                                  <span
+                                    class="productsSpan"
+                                    *ngIf="item['other_size_3_' + (i + 1)]"
+                                    ><strong>
+                                      {{
+                                        item["other_size_3_" + (i + 1)]
+                                          ? item["other_size_3_" + (i + 1)] + ":"
+                                          : "OS3:"
+                                      }}
+                                    </strong>
+                                    {{
+                                      item["pcs_3_" + (i + 1)]
+                                        ? item["pcs_3_" + (i + 1)]
+                                        : "-"
+                                    }}</span
+                                  >
+                                  <span
+                                    class="productsSpan"
+                                    *ngIf="item['other_size_4_' + (i + 1)]"
+                                    ><strong>{{
+                                      item["other_size_4_" + (i + 1)]
+                                        ? item["other_size_4_" + (i + 1)] + ":"
+                                        : "OS4:"
+                                    }}</strong>
+                                    {{
+                                      item["pcs_4_" + (i + 1)]
+                                        ? item["pcs_4_" + (i + 1)]
+                                        : "-"
+                                    }}</span
+                                  >
+                                </div>
+                              </div>
+                            </ng-container>
+                            </td>
+                            <td class="text-center">
+                                <div class="action-btn">
+                                    <button class="btn c-btn-primary square mx-1 p-2" title="Details" (click)="handleAction(order.id, 'view')">
+                                        <span><i class="fa fa-eye" style="color: white"></i></span>
+                                            </button>
+                                            <button class="btn c-btn-secondary square mx-1 p-2 bg-primary" title="Edit" (click)="handleAction(order.id, 'edit')">
+                                        <span><i class="fa fa-pencil" style="color: white"></i></span>
+                                    </button>
+                                        </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!-- End -->
+
+                <!-- Paginator -->
+                <div class="paginationContainer" *ngIf="orders.length > 0">
+                    <div class="paginationCountContainer">
+                        Showing {{pagination.current_page}} of {{pagination.last_page}} pages from {{pagination.total}} entries
+                    </div>
+                    <div class="paginationButtonsContainer">
+                        <input type="button" [disabled]="pagination.current_page <= 1" (click)="handlePageChangeClick('previous')" class="btn btn-secondary btn-sm mr-2" value="Previous">
+                        <input type="button" [disabled]="pagination.current_page == pagination.last_page" (click)="handlePageChangeClick('next')" class="btn btn-secondary btn-sm" value="Next">
+                    </div>
+                </div>
+                <!-- End -->
+                </div>
+            </div>
+        </div>
+
+        <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '3px', primaryColour: '#006ddd', backdropBackgroundColour: 'rgba(0, 0, 0, 0)' }"></ngx-loading>
+    </div>
+
+    <div id="dialog-confirm" title="Confirmation">
+        <p id="dialog-content"></p>
+    </div>
+
+    <!-- Create&Edit Order Modal -->
+    <div class="modal fade" id="createOrderDialog" tabindex="-1" role="dialog" aria-labelledby="shipstationTitle" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header px-5">
+                    <h5 class="modal-title">Create New Order</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+                </div>
+                <div class="modal-body">
+                    <iframe id="full_scope">
+              </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End -->

@@ -1,0 +1,768 @@
+<div class="main-wrap">
+    <app-navbar></app-navbar>
+    <div class="section-wrap pb-3 float-left w-100">
+        <div class="float-left w-100 mb-4">
+            <div class="row less-row">
+                <div class="col-lg-7">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="row">
+                                <div class="col mt-3 n-m-t">
+                                    <button title="Clear Filters" style="margin-left: 0" class="
+                      btn
+                      c-btn-primary c-btn-secondary
+                      create-order-btn-r
+                      c-btn-info
+                    " type="button" (click)="clearFilters()">
+                    <span>
+                      <i class="fa fa-refresh" style="color: Tomato"></i>
+                    </span>
+                    <!-- <span><i class="fa fa-refresh"></i></span> -->
+                  </button>
+                                </div>
+                                <div class="col mt-3 n-m-t" style="flex-grow: 10">
+                                    <div class="c-input">
+                                        <input appAutofocus (keyup.enter)="handleSearch()" type="text" [(ngModel)]="search" (ngModelChange)="handleSearch()" placeholder="Search" />
+                                    </div>
+                                </div>
+                                <button class="search-btn mt-3 n-m-t only-here" type="button" (click)="handleSearch()">
+                  <img src="assets/images/resource/icons/icon-search.png" />
+                </button>
+                                <button class="setting-btn mt-3 n-m-t only-here d-none" data-toggle="modal" data-target="#assignPrinterDialog" type="button">
+                  <img src="assets/images/resource/icons/icon-setting.png" />
+                </button>
+                                <div class="create-sec mt-3 n-m-t">
+                                    <!-- <button class="btn c-btn-primary create-order-btn-r" type="button" routerLink="/add-order">
+                    Create Order
+                  </button> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="row less-row">
+                                <div class="col mt-3 n-m-t">
+                                    <!-- <button style="margin-left: 0" routerLink="/user-list" class="btn c-btn-primary create-order-btn-r c-btn-info" type="button">
+                    <span><i class="fa fa-users"></i></span>
+                  </button>
+                                    <button title="Manage printers" style="margin-left: 0" routerLink="/printer-list" class="btn c-btn-primary create-order-btn-r c-btn-info ml-1" type="button">
+                    <span><i class="fa fa-print"></i></span>
+                  </button>
+                                    <button title="Manage Resources" style="margin-left: 0" routerLink="/resource-list" class="btn c-btn-primary create-order-btn-r c-btn-info ml-1" type="button">
+                    <span><i class="fa fa-address-book"></i></span>
+                  </button> -->
+                                </div>
+                                <!-- <div class="col mt-3 n-m-t">
+
+                </div> -->
+
+                                <div class="col-lg-4 mt-3 n-m-t d-none">
+                                    <div class="c-select2 dark">
+                                        <select [(ngModel)]="search_customer" class="form-control normal-select" (change)="handleSearch()">
+                      <option value="" selected disabled>Customer</option>
+                      <option
+                        *ngFor="let item of customers"
+                        value="{{ item.id }}"
+                      >
+                        {{ item.first_name }} {{ item.last_name }}
+                      </option>
+                    </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="row less-row">
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-input">
+                                <input autocomplete="off" type="text" placeholder="Print Date" id="search_printDate" [(ngModel)]="search_printDate" class="form-control normal-select" />
+                            </div>
+                        </div>
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select [(ngModel)]="search_dateOrder" class="form-control normal-select" (change)="handleSearch()">
+                  <option value="" selected disabled>Date Order</option>
+                  <option value="1">Today</option>
+                  <option value="5">5 Days</option>
+                  <option value="10">10 Days</option>
+                  <option value="25">25 Days</option>
+                  <option value="50">50 Days</option>
+                  <option value="10000">All</option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="col mt-3 n-m-t d-none">
+                            <div class="c-select2">
+                                <select [(ngModel)]="search_salesRep" class="form-control normal-select" (change)="handleSearch()">
+                  <option value="">All Sales</option>
+                  <option *ngFor="let item of salesReps" [value]="item.id">{{item.first_name}} {{item.last_name}}</option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select [(ngModel)]="search_orderStatus" class="form-control normal-select" (change)="handleSearch()">
+                                  <option value="">All</option>
+                                  <option value="Production">Production</option>
+                                  <option value="Processing">Processing</option>
+                                  <option value="Completed">Completed</option>
+                                  <option value="Shipping">Shipping</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select [(ngModel)]="search_printer" class="form-control normal-select" (change)="handleSearch()">
+                  <option value="" selected disabled>Printer Name</option>
+                  <option *ngFor="let item of printers" value="{{ item.id }}">
+                    {{ item.title }}
+                  </option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="col mt-3 n-m-t d-none">
+                            <div class="c-select2">
+                                <select class="form-control normal-select" [(ngModel)]="search_orderType" (change)="handleSearch()">
+                  <option value="" selected disabled>Order Type</option>
+                  <option value="screen_printing">Screen Printing</option>
+                  <option value="direct_to_garment">Direct To Garment</option>
+                  <option value="embroidery">Embroidery</option>
+                  <option value="order_others">Other</option>
+                </select>
+                            </div>
+                        </div>
+                        <div class="col mt-3 n-m-t">
+                            <div class="c-select2">
+                                <select class="form-control normal-select" [(ngModel)]="search_filmStatus" (change)="handleSearch()">
+                  <option value="" selected disabled>Film Status</option>
+                  <option value="not_added">Not Added</option>
+                  <option value="film_added">Film Added</option>
+                  <option value="all_orders">All Orders</option>
+                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 class="mt-5 float-left w-100 dashboard-heading d-none">
+            Welcome Back {{ user.first_name }}!
+            <span *ngIf="isLoading"><i class="fa fa-spinner fa-spin"></i></span>
+        </h1>
+        <div class="mb-2 d-none">
+            <button type="button" (click)="viewMultipleOrders()" class="btn btn-secondary btn-sm" [disabled]="checkboxes.length == 0">
+        ({{ checkboxes.length }}) View Multiple
+      </button>
+        </div>
+        <div class="c-datatable" *ngIf="!isLoading">
+            <div class="table-responsive">
+                <table id="myTable">
+                    <thead>
+                        <tr>
+                            <th>
+                                <button type="button" (click)="viewMultipleOrders()" class="btn btn-secondary btn-sm" [disabled]="checkboxes.length == 0">
+                  ({{ checkboxes.length }}) <span><i class="fa fa-eye"></i></span>
+                </button>
+                            </th>
+                            <th>ID#</th>
+                            <th>Proof</th>
+                            <th>Notes</th>
+                            <th class="text-center">Art</th>
+                            <th class="text-center">Art Files</th>
+                            <th class="text-center">Film</th>
+                            <th class="text-center">Film File</th>
+                            <th class="text-center">Turnaround</th>
+                            <th>Print Date</th>
+                            <th>Printer Name</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of orders; let i = index">
+                            <td>
+                                <div class="c-pick float-left">
+                                    <input type="checkbox" id="id_order_{{ order.id }}" [value]="order.id" (change)="handleCheckboxChange($event)" />
+                                    <label for="id_order_{{ order.id }}"></label>
+                                </div>
+                            </td>
+                            <td>{{ order.id }}</td>
+                            <td>
+                                <a [href]="order.proof_url ? order.proof_url: null" target="_blank">
+                                    <div class="art-table-new">
+                                        <img [src]="
+                        order.proof_url
+                          ? order.proof_url +'?id='+newDateTimestamp
+                          : 'assets/images/resource/icons/icon-art.png'
+                      " alt="" />
+                                    </div>
+                                </a>
+                            </td>
+                            <td>{{ order.art_notes }}</td>
+                            <td class="text-center">
+                                <div class="c-pick float-left">
+                                    <input type="checkbox" [checked]="order.art_is_sized === 1" (change)="handleCheckbox($event, order.id, 'art_is_sized')" id="art_is_sized_{{ order.id }}" />
+                                    <label for="art_is_sized_{{ order.id }}"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <span class="mr-2" *ngFor="let item of order.order_arts"><a [href]="item.file_url" target="_blank"><span><i style="color:green" class="fa fa-download fa-2x"></i></span></a>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <div class="c-pick float-left">
+                                    <input type="checkbox" [checked]="order.film === 1" (change)="handleCheckbox($event, order.id, 'film')" id="film_{{ order.id }}" />
+                                    <label for="film_{{ order.id }}"></label>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="text-center">
+                                    <a class="mr-2" *ngIf="order.film_file" [href]="order.film_file" target="_blank"><span><i style="color:green" class="fa fa-download fa-2x"></i></span></a>
+                                    <input style="display: none;" type="file" (change)="handleFilmFileUpload($event,order.id)" id="upload_film_file_{{i}}">
+                                    <label for="upload_film_file_{{i}}"><span ><i style="color:blue; cursor: pointer;" class="fa fa-upload fa-2x"></i></span></label>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                Created: {{ order.created_at | dateAgo }}<br/>
+                                <small>({{ getArrivalType(order.arrival_type) }})</small><br/> {{ getDueInfo(order.arrival_date) }}<br/>
+                                <small>({{order.hard_due_date == 1 ? "Hard due date" : "Soft due date"}})</small>
+                            </td>
+                            <td>
+                                {{ order.print_date | date }}
+                            </td>
+                            <td>
+                                {{ order.printer_name }}<br />
+                                <small>{{ order.printer_schedule }} -
+                  {{ order.printer_duration }}</small
+                >
+              </td>
+              <td>
+
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      <span class="fa fa-ellipsis-v"></span>
+                    </button>
+                    <div class="action-btn dropdown-menu">
+                    <a
+                      href="/order-details?id={{order.id}}"
+                      target="_blank"
+                      class="btn c-btn-primary sm square mx-1"
+                      title=""
+                      ><img src="assets/images/resource/icons/icon-eye.png"
+                    /></a>
+                    <a
+                      href="javascript:;"
+                      (click)="handleAction(order.id, 'edit')"
+                      class="btn c-btn-info sm square mx-1"
+                      title=""
+                      ><img src="assets/images/resource/icons/icon-pen.png"
+                    /></a>
+                    <button
+                      *ngIf="
+                        order.status === 'Production' ||
+                        order.status === 'Completed'
+                      "
+                      id="completed_{{ order.id }}"
+                      (click)="updateOrderStatus(order.id, 'completed')"
+                      [value]="order.status === 'Completed' ? false : true"
+                      href="javascript:;"
+                      class="btn m square mx-1"
+                      [ngClass]="
+                        order.status === 'Completed'
+                          ? 'c-btn-primary'
+                          : 'c-btn-secondary'
+                      "
+                      title=""
+                    >
+                      <img src="assets/images/resource/icons/icon-tick.png" />
+                    </button>
+                    <button
+                      type="button"
+                      title="Toggle Shipping Status"
+                      (click)="updateShipping(order.id)"
+                      class="btn m square mx-1"
+                      [ngClass]="
+                        order.is_shipping == '1'
+                          ? 'c-btn-primary'
+                          : 'c-btn-secondary'
+                      "
+                    >
+                      <img src="assets/images/resource/icons/icon-anchor.png" />
+                    </button>
+                    <a
+                      href="javascript:;"
+                      (click)="handleAction(order.id, 'delete')"
+                      class="btn c-btn-danger sm square mx-1"
+                      title=""
+                      ><img src="assets/images/resource/icons/icon-trash.png"
+                    /></a>
+                    <a
+                      href="javascript:;"
+                      (click)="handleAction(order.id, 'id_qr_code')"
+                      class="btn c-btn-info sm square mx-1 d-none"
+                      title=""
+                      ><img src="assets/images/resource/icons/qr-code.png"
+                    /></a>
+                </div>
+                  <!-- <ul class="dropdown-menu">
+                    <li><a href="#">Dropdown link</a></li>
+                    <li><a href="#">Dropdown link</a></li>
+                  </ul> -->
+                </div>
+
+
+
+
+
+
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="paginationContainer">
+          <div class="paginationCountContainer">
+            Showing {{fullData.current_page}} of {{fullData.last_page}} pages from {{fullData.total}} entries
+          </div>
+          <div class="paginationButtonsContainer">
+            <input type="button" (click)="handlePageChangeClick('previous')" class="btn btn-primary btn-sm mr-2" value="Previous" />
+            <input type="button" (click)="handlePageChangeClick('next')" class="btn btn-primary btn-sm" value="Next" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '3px', primaryColour: '#006ddd', backdropBackgroundColour: 'rgba(0, 0, 0, 0)' }"></ngx-loading>
+</div>
+<!-- Main Wrap -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModalLong"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header px-5">
+        <h5 class="modal-title" id="exampleModalLongTitle">Account Settings</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body px-5">
+        <div class="float-left w-100">
+          <div class="row">
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">First Name</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Last Name</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Contact Number</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Email</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Address</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">City</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">State</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Zipcode</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="button" class="btn btn-primary">Save</button>
+            </div>
+            <div class="col-lg-12">
+              <hr class="float-left w-100" />
+            </div>
+            <div class="col-lg-12">
+              <h6>Shipping Information</h6>
+            </div>
+            <div class="col-lg-12 mb-4">
+              <label class="mb-2">Email</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Name</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">AddressSte/Apt</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Ste/Apt</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">City</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">State</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Zipcode</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Assign Printer Dialog -->
+<div
+  class="modal fade"
+  id="assignPrinterDialog"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true"
+>
+  <form [formGroup]="form" (submit)="assignPrinter()">
+    <div
+      class="modal-dialog modal-md"
+      role="document"
+      style="position: relative !important"
+    >
+      <div class="modal-content" style="position: relative !important">
+        <div class="modal-header px-5">
+          <h5 class="modal-title" id="exampleModalLongTitle">Assign Printer</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body px-5" style="position: relative !important">
+          <div class="float-left w-100" style="position: relative !important">
+            <div class="row" style="position: relative">
+              <div class="col-lg-12 mb-4 d-none">
+                <label class="mb-2">Order ID</label>
+                <div class="c-input">
+                  <input
+                    formControlName="order_id"
+                    type="text"
+                    id="order_id_printer_modal"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4">
+                <label class="mb-2">Arrival Date</label>
+                <div class="c-input">
+                  <input
+                    disabled
+                    formControlName="arrival_date"
+                    type="text"
+                    class=""
+                    id="datepicker_arrival_date"
+                    placeholder="mm-dd-yy"
+                  />
+                  <!-- <input type="text" placeholder="" /> -->
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4">
+                <label class="mb-2">Resources</label>
+                <div class="c-input">
+                  <select
+                    formControlName="resource_id"
+                    class="form-control"
+                    style="height: auto; padding: 10px"
+                  >
+                    <option value="" selected disabled>Select Resource</option>
+                    <option *ngFor="let item of resources" value="{{ item.id }}">
+                      {{ item.email }}
+                    </option>
+                  </select>
+                  <label
+                    class="text-danger"
+                    *ngIf="
+                      form.controls.resource_id.invalid &&
+                      (form.controls.resource_id.touched ||
+                        form.controls.resource_id.dirty)
+                    "
+                    >Required Field</label
+                  >
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4">
+                <label class="mb-2">Printer</label>
+                <div class="c-input">
+                  <select
+                    formControlName="printer_id"
+                    class="form-control"
+                    style="height: auto; padding: 10px"
+                  >
+                    <option value="" selected disabled>Select Printer</option>
+                    <option *ngFor="let item of printers" value="{{ item.id }}">
+                      {{ item.title }}
+                    </option>
+                  </select>
+                  <label
+                    class="text-danger"
+                    *ngIf="
+                      form.controls.printer_id.invalid &&
+                      (form.controls.printer_id.touched ||
+                        form.controls.printer_id.dirty)
+                    "
+                    >Required Field</label
+                  >
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4" style="position: relative">
+                <label class="mb-2">Print Date</label>
+                <div class="c-input">
+                  <input
+                    autocomplete="off"
+                    autocapitalize="off"
+                    type="text"
+                    class=""
+                    formControlName="print_date"
+                    id="datepicker_print_date"
+                    placeholder="mm-dd-yy"
+                  />
+                  <label
+                    class="text-danger"
+                    *ngIf="
+                      form.controls.print_date.invalid &&
+                      (form.controls.print_date.touched ||
+                        form.controls.print_date.dirty)
+                    "
+                    >Required Field</label
+                  >
+                  <!-- <input type="text" placeholder="" /> -->
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4">
+                <label class="mb-2">Schedule</label>
+                <div class="c-input">
+                  <select
+                    formControlName="printer_schedule"
+                    class="form-control"
+                    style="height: auto; padding: 10px"
+                  >
+                    <option value="" disabled selected>Select Schedule</option>
+                    <option value="6AM">6AM</option>
+                    <option value="7AM">7AM</option>
+                    <option value="8AM">8AM</option>
+                    <option value="9AM">9AM</option>
+                    <option value="10AM">10AM</option>
+                    <option value="11AM">11AM</option>
+                    <option value="12PM">12PM</option>
+                    <option value="1PM">1PM</option>
+                    <option value="2PM">2PM</option>
+                    <option value="3PM">3PM</option>
+                    <option value="4PM">4PM</option>
+                    <option value="5PM">5PM</option>
+                    <option value="6PM">6PM</option>
+                    <option value="7PM">7PM</option>
+                    <option value="8PM">8PM</option>
+                    <option value="9PM">9PM</option>
+                    <option value="10PM">10PM</option>
+                    <!-- <option value="First 8AM">First 8AM</option>
+                    <option value="Mid 11AM">Mid 11AM</option>
+                    <option value="Last 3PM">Last 3PM</option>
+                    <option value="EOD 5PM">EOD 5PM</option>
+                    <option value="Rush All Day">Rush All Day</option>
+                    <option value="Overtime 6PM">Overtime 6PM</option> -->
+                  </select>
+                  <label
+                    class="text-danger"
+                    *ngIf="
+                      form.controls.printer_schedule.invalid &&
+                      (form.controls.printer_schedule.touched ||
+                        form.controls.printer_schedule.dirty)
+                    "
+                    >Required Field</label
+                  >
+                </div>
+              </div>
+              <div class="col-lg-12 mb-4">
+                <label class="mb-2">Duration</label>
+                <div class="c-input">
+                  <select
+                    formControlName="printer_duration"
+                    class="form-control"
+                    style="height: auto; padding: 10px"
+                  >
+                    <option value="" disabled selected>Select Duration</option>
+                    <option value="30 Min">30 Min</option>
+                    <option value="1 Hr">1 Hr</option>
+                    <option value="1.5 Hr">1.5 Hr</option>
+                    <option value="2 Hr">2 Hr</option>
+                    <option value="2.5 Hr">2.5 Hr</option>
+                    <option value="3 Hr">3 Hr</option>
+                    <option value="3.5 Hr">3.5 Hr</option>
+                    <option value="4 Hr">4 Hr</option>
+                    <option value="5 Hr">5 Hr</option>
+                    <option value="6 Hr">6 Hr</option>
+                    <option value="7 Hr">7 Hr</option>
+                  </select>
+                  <label
+                    class="text-danger"
+                    *ngIf="
+                      form.controls.printer_duration.invalid &&
+                      (form.controls.printer_duration.touched ||
+                        form.controls.printer_duration.dirty)
+                    "
+                    >Required Field</label
+                  >
+                </div>
+              </div>
+              <div class="col-lg-12">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+                <button type="submit" class="btn btn-primary ml-2">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div id="dialog-confirm" title="Confirmation">
+  <p id="dialog-content"></p>
+</div>
+
+
+
+<div
+  class="modal fade"
+  id="qrCodeDialog"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="qrCodeTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header px-5">
+        <h5 class="modal-title" id="qrCodeTitle">Codes</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body px-5">
+        <div class="float-left w-100">
+          <div class="row">
+            <div class="col-lg-12 mt-3 text-center">
+              <label class="mb-2">ID</label>
+              <div>
+                <qrcode [qrdata]="qrIDString" [width]="200"></qrcode>
+              </div>
+            </div>
+            <div class="col-lg-12 mt-3 mb-2 text-center">
+              <label class="mb-2">URL</label>
+              <div>
+                <qrcode [qrdata]="qrURLString" [width]="200"></qrcode>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Create&Edit Order Modal -->
+    <div class="modal fade" id="createOrderDialog" tabindex="-1" role="dialog" aria-labelledby="shipstationTitle" aria-hidden="true">
+      <div class="modal-dialog modal-xl" role="document">
+          <div class="modal-content">
+              <div class="modal-header px-5">
+                  <h5 class="modal-title">Create New Order</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+              </div>
+              <div class="modal-body">
+                  <iframe id="full_scope">
+            </iframe>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- End -->

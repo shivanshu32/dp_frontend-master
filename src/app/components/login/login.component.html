@@ -1,0 +1,74 @@
+<div class="body_wrap">
+    <div class="side-left">
+        <div class="form-sec">
+            <div class="logo">
+                <a href="javascript:;" routerLink="/login" title=""><img src="assets/images/logo.png" alt=""></a>
+            </div>
+            <h1>Login to Account</h1>
+            <form (submit)="submit()" [formGroup]="form">
+                <div id="role-select" class="dropdown dropselect d-none">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="fruit" data-toggle="dropdown"
+                        aria-expanded="true">
+                        <span class="dropdown-label">Dropdown</span>
+                        <span class="caret"></span>
+                    </button>
+                    <div class="dropdown-menu" role="menu" aria-labelledby="option-post-cleanup">
+                        <a class="dropdown-item" data-value="orange" data-selected="selected" role="menuitem"
+                            tabindex="-1">Administrative</a>
+                        <a class="dropdown-item" data-value="pear" role="menuitem" tabindex="-1">User</a>
+                        <a class="dropdown-item" data-value="apple" role="menuitem" tabindex="-1">Moderator</a>
+                    </div>
+                </div>
+
+                <div class="from-fields">
+                    <label for="email">Email Address</label>
+                    <input type="email" formControlName="email" placeholder="admin@admin.com" id="email">
+                    <label class="text-danger text-left mt-3" *ngIf="form.controls.email.invalid && (form.controls.email.dirty || form.controls.email.touched)">Valid email is required</label>
+                </div>
+                <div class="from-fields">
+                    <label for="pass">Password</label>
+                    <input type="password" formControlName="password" placeholder="" id="password">
+                    <button id="show-pass" type="button" (click)="togglePassword()" ><i class="fa fa-eye"></i></button>
+                    <label class="text-danger text-left mt-3"
+                        *ngIf="form.controls.password.invalid && (form.controls.password.dirty || form.controls.password.touched)">Password is required</label>
+                </div>
+                <div class="from-fields">
+                    <div class="float-left d-none">
+                        <div class="c-pick">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">Remember me</label>
+                        </div>
+                    </div>
+                    <div class="float-center">
+                        <a class="forgot-password" href="javascript:;" routerLink="/forgot-password" title="">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="from-fields">
+                    <button [disabled]="!form.valid || isLoading" type="submit" class="btn btn-large" type="submit">Log In<span *ngIf="isLoading">&nbsp;<i class="fa fa-spinner fa-spin"></i></span></button>
+                </div>
+            </form>
+            <div class="have-account d-none">
+                <span>Don’t have an account yet? <a href="signup.html" title=""> Create an account</a></span>
+            </div>
+
+        </div>
+    </div>
+    <div class="side-right">
+        <h3>We are committed to delivering a high quality product at a low and affordable price.</h3>
+        <img src="assets/images/resource/mockup.png" alt="">
+        <div class="account-bottom">
+            <div class="float-left w-100">
+                <div class="quick-acount-info">
+                    <h4>Contact Us</h4>
+                    <span>(310) 916 - 9514</span>
+                    <span>support@districtprinting.com</span>
+                </div>
+                <div class="quick-acount-info">
+                    <h4>Monday - Friday</h4>
+                    <span>9am - 5pm (BY APPOINTMENT ONLY)</span>
+                    <span>4722 Normandie Ave Los Angeles, CA 90037</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Body Wrap -->

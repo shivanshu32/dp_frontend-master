@@ -1,0 +1,238 @@
+<div class="main-wrap">
+    <app-navbar></app-navbar>
+    <section>
+        <div class="block sec-bg">
+            <div class="container">
+                <div class="client-head">
+                    <h4>Welcome</h4>
+                    <h2 >{{user.first_name}} {{user.last_name}}</h2>
+                    <a href="javascript:;" routerLink="/add-order" title="" class="create-order-btn">Create New Order</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="block">
+            <div class="row mx-0">
+                <div class="col  px-0">
+                    <div class="color-block color1">
+                        <a href="javascript:;" routerLink="/profile" title="">
+                            <img src="assets/images/resource/icons/icon-account.png" alt="">
+                            <span>My Account</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col px-0">
+                    <div class="color-block color2">
+                        <a href="javascript:;" [routerLink]="['/client-orders']" [queryParams]="{status:'open'}"  title="">
+                            <img src="assets/images/resource/icons/icon-order.png" alt="">
+                            <span>Open Orders</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col px-0">
+                    <div class="color-block color3">
+                        <a href="javascript:;" [routerLink]="['/client-orders']" [queryParams]="{status:'completed'}" title="">
+                            <img src="assets/images/resource/icons/icon-money.png" alt="">
+                            <span>Completed Orders</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="block pt-5 mt-5 mb-5 pb-5">
+            <div class="container fluiding">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="c-accordinan">
+                            <h3>Common Order Questions</h3>
+                            <div id="accordion">
+                                <div class="card-header" id="headingOne">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                                            aria-expanded="true" aria-controls="collapseOne">
+                                            How do I know If my order is being processed?
+                                        </button>
+                                    </h5>
+                                </div>
+
+                                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne"
+                                    data-parent="#accordion">
+                                    As a customer, you would log in and upload phone numbers to be scanned. We then use
+                                    a proprietary system to scan the servers of all the scam and robocall blocking apps
+                                    and websites. This process happens almost immediately. Once we get the information
+                                    back we populate your account dashboard with all the details.
+                                </div>
+                                <div class="card-header" id="headingTwo">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                            data-target="#collapseTwo" aria-expanded="false"
+                                            aria-controls="collapseTwo">
+                                            What are common delays that could affect my order?
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordion">
+                                    As a customer, you would log in and upload phone numbers to be scanned. We then use
+                                    a proprietary system to scan the servers of all the scam and robocall blocking apps
+                                    and websites. This process happens almost immediately. Once we get the information
+                                    back we populate your account dashboard with all the details.
+                                </div>
+                                <div class="card-header" id="headingThree">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-link collapsed" data-toggle="collapse"
+                                            data-target="#collapseThree" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                            What is the turn-around time?
+                                        </button>
+                                    </h5>
+                                </div>
+                                <div id="collapseThree" class="collapse" aria-labelledby="headingThree"
+                                    data-parent="#accordion">
+                                    As a customer, you would log in and upload phone numbers to be scanned. We then use
+                                    a proprietary system to scan the servers of all the scam and robocall blocking apps
+                                    and websites. This process happens almost immediately. Once we get the information
+                                    back we populate your account dashboard with all the details.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="img-play-video">
+                            <img src="assets/images/resource/image-play.jpg" alt="">
+                            <a href="#" title=""><img src="assets/images/resource/icons/icon-play.png" alt=""></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <span>2020 © District Printing </span>
+        <span>4722 Normandie Ave, Los Angeles, CA 90037</span>
+    </footer>
+</div><!-- Main Wrap -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header  px-5">
+                <h5 class="modal-title" id="exampleModalLongTitle">Account Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="float-left w-100">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">First Name</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Last Name</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Contact Number</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Email</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Address</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">City</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">State</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Zipcode</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Save</button>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr class="float-left w-100">
+                        </div>
+                        <div class="col-lg-12">
+                            <h6>Shipping Information</h6>
+                        </div>
+                        <div class="col-lg-12 mb-4">
+                            <label class="mb-2">Email</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Name</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">AddressSte/Apt</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Ste/Apt</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">City</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">State</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Zipcode</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

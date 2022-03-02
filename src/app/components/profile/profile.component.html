@@ -1,0 +1,358 @@
+<div class="main-wrap">
+    <app-navbar></app-navbar>
+    <!-- <div class="text-center mt-5" ><span><i class="fa fa-spinner fa-spin fa-2x"></i></span></div> -->
+    
+    <section>
+        <div class="block mt-5 pt-5">
+            <div class="container">
+                <form [formGroup]="form" (submit)="submit()" class="float-left w-100">
+                    <div class="row text-center mx-auto d-block mb-5">
+                        <h4 class="text-center">Personal Information</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2  n-m-b">First Name *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="first_name">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.first_name.valid && (form.controls.first_name.dirty || form.controls.first_name.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Last Name *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="last_name">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.last_name.valid && (form.controls.last_name.dirty || form.controls.last_name.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <!-- <div class="col-lg-6 col-sm-6 mb-4 n-m-b d-none">
+                            <label class="mb-2 n-m-b">Current Password</label>
+                            <div class="c-input">
+                                <input type="password" placeholder="">
+                            </div>
+                        </div> -->
+                        <!-- <div class="col-lg-6 col-sm-6 mb-4 n-m-b d-none">
+                            <label class="mb-2 n-m-b">New Password</label>
+                            <div class="c-input">
+                                <input type="password" placeholder="">
+                            </div>
+                        </div> -->
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Contact Number *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="contact_number">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.contact_number.valid && (form.controls.contact_number.dirty || form.controls.contact_number.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Email *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="email">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.email.valid && (form.controls.email.dirty || form.controls.email.touched)">Valid email
+                                    required</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Address *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="address">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.address.valid && (form.controls.address.dirty || form.controls.address.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">City *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="city">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.city.valid && (form.controls.city.dirty || form.controls.city.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">State *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="state">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.state.valid && (form.controls.state.dirty || form.controls.state.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Zipcode *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="zipcode">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!form.controls.zipcode.valid && (form.controls.zipcode.dirty || form.controls.zipcode.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-6 mb-5">
+                            <button type="submit" [disabled]="form.invalid" class="btn btn-primary float-left w-100 py-2">Update<span *ngIf="isLoading">&nbsp;<i class="fa fa-spinner fa-spin"></i></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Shipping -->
+    <section *ngIf="user.role === 'Customer'">
+        <div class="block mt-5 pt-5">
+            <div class="container">
+                <form [formGroup]="formShipping" (submit)="submitShipping()" class="float-left w-100">
+                    <div class="row text-center mx-auto d-block mb-5">
+                        <h4 class="text-center">Shipping Information</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2  n-m-b">Email *</label>
+                            <div class="c-input">
+                                <input type="email" placeholder="" formControlName="shipping_email">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_email.valid && (formShipping.controls.shipping_email.dirty || formShipping.controls.shipping_email.touched)">Valid email required</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Name *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="shipping_name">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_name.valid && (formShipping.controls.shipping_name.dirty || formShipping.controls.shipping_name.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Apartment Street *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="shipping_street_appartment">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_street_appartment.valid && (formShipping.controls.shipping_street_appartment.dirty || formShipping.controls.shipping_street_appartment.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">City *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="shipping_city">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_city.valid && (formShipping.controls.shipping_city.dirty || formShipping.controls.shipping_city.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">State *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="shipping_state">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_state.valid && (formShipping.controls.shipping_state.dirty || formShipping.controls.shipping_state.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-sm-6 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Zipcode *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="shipping_zipcode">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_zipcode.valid && (formShipping.controls.shipping_zipcode.dirty || formShipping.controls.shipping_zipcode.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 mb-4 n-m-b">
+                            <label class="mb-2 n-m-b">Address *</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="" formControlName="shipping_address">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formShipping.controls.shipping_address.valid && (formShipping.controls.shipping_address.dirty || formShipping.controls.shipping_address.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-6 mb-5">
+                            <button type="submit" [disabled]="formShipping.invalid"
+                                class="btn btn-primary float-left w-100 py-2">Update<span *ngIf="isLoading">&nbsp;<i
+                                        class="fa fa-spinner fa-spin"></i></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section>
+        <div class="block mt-5 pt-5">
+            <div class="container">
+                <form [formGroup]="formPassword" (submit)="submitPassword()" class="float-left w-100">
+                    <div class="row text-center mx-auto d-block mb-5">
+                        <h4 class="text-center">Update Password</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12 mb-4 n-m-b">
+                            <label class="mb-2  n-m-b">Current Password *</label>
+                            <div class="c-input">
+                                <input type="password" placeholder="" formControlName="current_password">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formPassword.controls.current_password.valid && (formPassword.controls.current_password.dirty || formPassword.controls.current_password.touched)">Required field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 mb-4 n-m-b">
+                            <label class="mb-2  n-m-b">Password *</label>
+                            <div class="c-input">
+                                <input type="password" placeholder="" formControlName="password">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formPassword.controls.password.valid && (formPassword.controls.password.dirty || formPassword.controls.password.touched)">Required
+                                    field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-12 mb-4 n-m-b">
+                            <label class="mb-2  n-m-b">Password Confirmation*</label>
+                            <div class="c-input">
+                                <input type="password" placeholder="" formControlName="password_confirmation">
+                                <label class="text-left mt-2 text-danger"
+                                    *ngIf="!formPassword.controls.password_confirmation.valid && (formPassword.controls.password_confirmation.dirty || formPassword.controls.password_confirmation.touched)">Should match the password field</label>
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-sm-6 mb-5">
+                            <button type="submit" [disabled]="formPassword.invalid"
+                                class="btn btn-primary float-left w-100 py-2">Update<span *ngIf="isLoading">&nbsp;<i
+                                        class="fa fa-spinner fa-spin"></i></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+
+</div><!-- Main Wrap -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header  px-5">
+                <h5 class="modal-title" id="exampleModalLongTitle">Account Settings</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="float-left w-100">
+                    <div class="row">
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">First Name</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Last Name</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Contact Number</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Email</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Address</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">City</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">State</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Zipcode</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary">Save</button>
+                        </div>
+                        <div class="col-lg-12">
+                            <hr class="float-left w-100">
+                        </div>
+                        <div class="col-lg-12">
+                            <h6>Shipping Information</h6>
+                        </div>
+                        <div class="col-lg-12 mb-4">
+                            <label class="mb-2">Email</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Name</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">AddressSte/Apt</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Ste/Apt</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">City</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">State</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                        <div class="col-lg-6 mb-4">
+                            <label class="mb-2">Zipcode</label>
+                            <div class="c-input">
+                                <input type="text" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

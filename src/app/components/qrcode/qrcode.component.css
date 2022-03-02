@@ -1,0 +1,25 @@
+#full_scope{height: 100%;width: 100%;border: 0}
+#qrcode_container,#qrcode_container iframe{height: 800px;}
+
+@media print{
+    @page { size: landscape; }
+    body,.main-wrap{background:#fff!important}
+    .dashboard-header,app-navbar{display:none!important}
+    #qrcode_page{display:none}
+    #qrCodeDialog {
+        z-index: -1;
+    }
+    .modal-backdrop{display: none}
+}
+
+#qrCodeDialog {
+    z-index: -1;
+}
+
+span#order_name {
+    font: normal 50% Arial Narrow;
+}
+
+#pdfContainer h1 {
+    line-height: 100%;
+}

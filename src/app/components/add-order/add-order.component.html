@@ -1,0 +1,1795 @@
+<div class="main-wrap">
+    <app-navbar *ngIf="params.view !== 'modal'"></app-navbar>
+    <div *ngIf="isLoading" class="text-center mb-5" style="margin-top: 110px">
+        <span><i class="fa fa-spinner fa-spin fa-4x"></i></span>
+    </div>
+    <div class="section-wrap pb-3 float-left w-100" [ngClass]="isLoading === true ? 'hidden' : 'visible'">
+        <form (submit)="addOrder()" [formGroup]="form" class="float-left w-100">
+            <div class="row">
+                <input *ngIf="user.role === 'Customer'" type='hidden' name="customer_id" formControlName="customer_id" value="-1">
+                <div class='col-lg-6'>
+                    <div class="d-field">
+                        <input id="clientList" *ngIf="user.role !== 'Customer'" class="d-none" name="customer_id" formControlName="customer_id">
+                        <div class="row">
+                            <div class="pl-3" *ngIf="this.editMode" style="padding-top:10px">
+                                <span>Client</span>
+                                <!-- <img src="assets/images/resource/icons/job.png" alt="" /> -->
+                            </div>
+                            <div class="col" *ngIf="this.editMode" [hidden]="user.role === 'Customer'">
+                                <div class="c-input">
+                                    <input type="text" class="ng-pristine ng-valid ng-touched" readonly id="client_name">
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6" *ngIf="!this.editMode && user.role !== 'Customer'">
+                                <div class="input-group mb-3 c-input" id="client_selector">
+                                    <div class="input-group-prepend show">
+                                        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-user-circle" aria-hidden="true"></i>
+                </button>
+                                        <div class="dropdown-menu " id="client_list">
+
+                                            <span class="dropdown-header">Client Names</span>
+
+                                            <div role="separator" class="dropdown-divider"></div>
+
+                                            <div id="list_of_clients"></div>
+                                        </div>
+                                    </div>
+                                    <input type="text" autocomplete="off" class="ng-pristine ng-valid ng-touched" aria-label="Text input with dropdown button" placeholder="Select Client..." id="client_select_form">
+                                </div>
+                            </div>
+                            <div [class]="user.role === 'Customer' ? 'col-lg-8' : 'col-lg-6'">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <div class="c-input">
+                                            <input type="text" formControlName="name" placeholder="Job Name (Required)" />
+                                            <div class="text-danger text-left" *ngIf="
+                          form.controls.name.invalid &&
+                          (form.controls.name.touched ||
+                            form.controls.name.dirty)
+                        ">
+                                                Required field
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="c-pick sm float-right pr-3">
+                                        <input type="checkbox" id="multi" formControlName="multiple_pages" checked="form.controls.multiple_pages.value" />
+                                        <label for="multi">Multiple Pages</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-field">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-12">
+                                        <label class="c-label w-100 mb-3 c-label-icon">
+                      <img
+                        class="float-left"
+                        src="assets/images/resource/icons/icons.png"
+                        alt=""
+                      />&nbsp;Type</label
+                    >
+                  </div>
+                  <div class="col">
+                    <div class="c-select2">
+                      <select
+                        (change)="handleSelectChange($event)"
+                        id="orderType"
+                        formControlName="type"
+                      >
+                        <option value="" selected disabled>Order Type (Required)</option>
+                        <option *ngFor="let item of orderTypes" value="{{ item.key }}">{{ item.value }}</option>
+                      </select>
+                      <div
+                        class="text-danger text-left"
+                        *ngIf="
+                          form.controls.type.invalid &&
+                          (form.controls.type.touched ||
+                            form.controls.type.dirty)
+                        "
+                      >
+                        Required field
+                      </div>
+                    </div>
+                    <div [hidden]="!showOrderOthers" class="c-input mt-2">
+                      <input
+                        type="text"
+                        formControlName="type_other"
+                        placeholder="Please specifiy others"
+                      />
+                    </div>
+                    <div class="c-input mt-2">
+                      <input
+                        type="text"
+                        formControlName="type_notes"
+                        placeholder="Notes"
+                      />
+                      <div
+                        class="text-danger text-left"
+                        *ngIf="
+                          form.controls.type_notes.invalid &&
+                          (form.controls.type_notes.touched ||
+                            form.controls.type_notes.dirty)
+                        "
+                      >
+                        Required field
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row align-items-center less-row">
+                  <div class="col-lg-12">
+                    <label class="c-label w-100 mb-3 c-label-icon mt-t">
+                      <img
+                        class="float-left mr-2"
+                        src="assets/images/resource/icons/icon-setup.png"
+                        alt=""
+                      />
+                      Setup
+                    </label>
+                                    </div>
+                                    <div class="col">
+                                        <div class="c-input">
+                                            <input type="text" formControlName="setup_name" placeholder="Setup, Digi.. etc" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="c-input">
+                                            <input type="text" formControlName="setup_screen_1" placeholder="Screen" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="c-input">
+                                            <input type="text" formControlName="setup_screen_2" placeholder="Screen" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="c-input mt-2">
+                                            <input type="text" formControlName="setup_notes" placeholder="Notes" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-field">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-lg-12">
+                                        <label class="c-label w-100 c-label-icon mb-2 pb-2 green-check"><img
+                        class="float-left mr-2"
+                        src="assets/images/resource/icons/icon-shirt.png"
+                        alt=""
+                      />
+                      Proof
+                    </label>
+                                    </div>
+                                    <div class="col-lg-12">
+                                        <div class="drag-drop-upload" id="proof_url" [ngStyle]="{
+                        'background-image': form.controls.proof_url.value
+                          ? 'url(' + form.controls.proof_url.value + ')'
+                          : null
+                      }">
+                                            <div class="preview-zone hidden">
+                                                <div class="box box-solid">
+                                                    <div class="box-body"></div>
+                                                </div>
+                                            </div>
+                                            <div class="dropzone-wrapper">
+                                                <input type="file" (change)="handleFileSelect($event, 'proof_url')" name="img_logo" class="dropzone" />
+                                            </div>
+                                        </div>
+                                        <div class="c-input mt-2">
+                                            <input type="text" formControlName="proof_notes" placeholder="Notes" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="row align-items-center">
+                                    <div class="col-lg-12">
+                                        <div class="row align-items-center mb-3">
+                                            <label style="cursor: pointer" (click)="toggleOverlay()" class="c-label col-lg-4 pl-3 c-label-icon">
+                        <img
+                          class="float-left mr-2"
+                          src="assets/images/resource/icons/icon-shirt.png"
+                          alt=""
+                        />
+                        Art
+                        <span class="d-none" title="Toggle Files Detail"
+                          >(<i
+                            [ngClass]="
+                              overlayToggled == true
+                                ? 'fa fa-eye-slash'
+                                : 'fa fa-eye'
+                            "
+                          ></i
+                          >)</span
+                        >
+                      </label>
+                                            <div class="col-lg-8">
+                                                <div class="row align-items-center">
+                                                    <div class="col-4">
+                                                        <div class="c-pick sm float-left not-sized">
+                                                            <input type="checkbox" id="notsized" formControlName="art_is_sized" [checked]="form.controls.art_is_sized.value" />
+                                                            <label for="notsized">Art</label>
+                                                        </div>
+                                                        <div class="c-input d-none">
+                                                            <input type="text" placeholder="i.e. box , drive" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-8">
+                                                        <!-- <div class="c-pick sm float-right not-sized">
+                              <input
+                                type="checkbox"
+                                id="notsized"
+                                formControlName="art_is_sized"
+                                [checked]="form.controls.art_is_sized.value"
+                              />
+                              <label for="notsized">Art</label>
+                            </div> -->
+                                                        <div *ngIf="film_file && user.role=='Admin'" class="c-pick sm float-right not-sized" style="margin-left: 10px;">
+                                                            <a [href]="film_file" target="_blank" download="film_file"><span style="color: green;"><i class="fa fa-download"></i></span></a>
+                                                        </div>
+                                                        <div *ngIf="user.role=='Admin'" class="c-pick sm float-right not-sized" style="margin-right: 0px;">
+                                                            <input type="checkbox" id="film" formControlName="film" [checked]="form.controls.film.value" />
+                                                            <label for="film">Film</label>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-4 pr-0">
+                                                <div class="drag-drop-upload">
+                                                    <div class="preview-zone hidden">
+                                                        <div class="box box-solid">
+                                                            <div class="box-body"></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="dropzone-wrapper">
+                                                        <input multiple (change)="handleMultiFileSelect($event, 'order_arts')" type="file" name="img_logo" class="dropzone" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div style="border: 1px solid #d6d6d6;
+                        border-radius: 5px;
+                        min-height: 100%;
+                        background: white;
+                        padding: 2px 20px;">
+                                                    <div class="artSlider" [hidden]="overlayToggled">
+                                                        <div class="slider-sec2">
+                                                            <div *ngIf="files.length > 0" class="mb-1">
+                                                                <small><b
+                                      >New files selected ({{ files.length }})</b
+                                    ></small
+                                  >
+                                </div>
+                                <div *ngIf="files.length" class="mb-4">
+                                  <ul id="art-images-temp">
+                                    <li
+                                      class="text-center"
+                                      *ngFor="let item of files; let i = index"
+                                    >
+                                      <div
+                                        style="
+                                          display: flex;
+                                          flex-direction: row;
+                                          justify-content: flex-start;
+                                          align-items: center;
+                                        "
+                                      >
+                                        <div>
+                                          <button
+                                            type="button"
+                                            class="btn btn-danger btn-sm text-center"
+                                            (click)="deleteTempFile(i)"
+                                          >
+                                            <span><i class="fa fa-trash"></i></span>
+                                          </button>
+                                        </div>
+                                        <div class="ml-2">
+                                          {{ "..." + item.name.substr(-15)  }}
+                                        </div>
+
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <div  *ngIf="form.controls.order_arts.value.length > 0" class="pt-2">
+                                  <div class="small mb-1"><b>Uploaded Files ({{form.controls.order_arts.value.length}})</b></div>
+                                  <ul id="art-images">
+                                    <li
+                                      class="text-center"
+                                      *ngFor="
+                                        let item of form.controls.order_arts.value;
+                                        let i = index
+                                      "
+                                    >
+                                      <div
+                                        style="
+                                          display: flex;
+                                          flex-direction: row;
+                                          justify-content: flex-start;
+                                          align-items: center;
+                                        "
+                                      >
+                                        <div>
+                                          <button
+                                            type="button"
+                                            class="btn btn-danger btn-sm text-center"
+                                            (click)="deleteImage(item.id, item.order_id)"
+                                          >
+                                            <span><i class="fa fa-trash"></i></span>
+                                          </button>
+                                        </div>
+                                        <div class="ml-2">
+                                          <a href="{{ item.file_url }}" target="blank">
+                                            {{ "..." + item.filename.substr(-15)  }}
+                                          </a>
+                                        </div>
+
+                                      </div>
+                                      <img
+                                        src="{{ item.file_url }}"
+                                        style="
+                                          height: 280px;
+                                          object-fit: contain;
+                                          width: 100%;
+                                          display: none;
+                                        "
+                                      />
+                                    </li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="c-input mt-2">
+                      <input
+                        type="text"
+                        formControlName="art_notes"
+                        placeholder="Notes"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-field mt-1">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="row align-items-center">
+                  <div class="col-lg-12">
+                    <label class="c-label mb-3 c-label-icon"
+                      ><img
+                        class="float-left mr-2"
+                        src="assets/images/resource/icons/icon-shirt.png"
+                        alt=""
+                      />
+                      Positions
+                      <!-- <div class="c-pick sm float-right pr-3 w-100">
+
+                    </div> -->
+                    </label>
+                    <label class="float-right mt-2">
+                      <input
+                        type="checkbox"
+                        id="proof"
+                        formControlName="match_proof_position"
+                        checked="form.controls.match_proof_position.value"
+                      />
+                      <label for="proof">&nbsp;Match Proof Position</label>
+                    </label>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <label class="c-label w-100 mb-1">Front </label>
+                    <div class="c-input mt-2">
+                      <input
+                      maxlength="21"
+                        formControlName="position_front"
+                        type="text"
+                        placeholder="i.e. 3.5 inches from neck"
+                      />
+                      <div
+                        style="font-size: small;"
+                        class="text-danger text-left"
+                        *ngIf="
+                          form.controls.position_front.invalid &&
+                          (form.controls.position_front.touched ||
+                            form.controls.position_front.dirty)
+                        "
+                      >
+                        Characters should be less than or equal to 20
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mb-3">
+                    <label class="c-label w-100 mb-1">Back </label>
+                    <div class="c-input mt-2">
+                      <input
+                      maxlength="21"
+                        formControlName="position_back"
+                        type="text"
+                        placeholder="i.e. 3.5 inches from neck"
+                      />
+                    </div>
+                    <div
+                        style="font-size: small;"
+                        class="text-danger text-left"
+                        *ngIf="
+                          form.controls.position_back.invalid &&
+                          (form.controls.position_back.touched ||
+                            form.controls.position_back.dirty)
+                        "
+                      >
+                        Characters should be less than or equal to 20
+                      </div>
+                  </div>
+                  <div class="col-lg-6 mb-1">
+                    <label class="c-label w-100 mb-1">Right/Left </label>
+                    <div class="c-input mt-1">
+                      <input
+                        type="text"
+                        maxlength="21"
+                        placeholder=""
+                        formControlName="position_right_left"
+                      />
+                    </div>
+                    <div
+                        style="font-size: small;"
+                        class="text-danger text-left"
+                        *ngIf="
+                          form.controls.position_right_left.invalid &&
+                          (form.controls.position_right_left.touched ||
+                            form.controls.position_right_left.dirty)
+                        "
+                      >
+                        Characters should be less than or equal to 20
+                      </div>
+                  </div>
+                  <div class="col-lg-6 mb-1">
+                    <label class="c-label w-100 mb-1">Additional </label>
+                    <div class="c-input mt-1">
+                      <input
+                        type="text"
+                        maxlength="21"
+                        formControlName="position_additional"
+                        placeholder="i.e. Size Tag"
+                      />
+                    </div>
+                    <div
+                        style="font-size: small;"
+                        class="text-danger text-left"
+                        *ngIf="
+                          form.controls.position_additional.invalid &&
+                          (form.controls.position_additional.touched ||
+                            form.controls.position_additional.dirty)
+                        "
+                      >
+                        Characters should be less than or equal to 20
+                      </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="c-input mt-2">
+                      <input
+                        type="text"
+                        formControlName="position_notes"
+                        placeholder="Notes"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row align-items-center less-row">
+                  <div class="col-lg-12">
+                    <label class="c-label mb-3 c-label-icon mt-t">
+                      <img
+                        class="float-left mr-2"
+                        src="assets/images/resource/icons/icon-color.png"
+                        alt=""
+                      />
+                      Colors
+                    </label>
+                    <label class="float-right mt-2">
+                      <input
+                        type="checkbox"
+                        id="proof_color"
+                        formControlName="match_proof_color"
+                        checked="form.controls.match_proof_color.value"
+                      />
+                      <label for="proof_color">&nbsp;Match Proof Color</label>
+                    </label>
+                  </div>
+                  <div class="col-lg-12 mb-1">
+                    <label class="c-label w-100 mb-1">Pantone Preferred </label>
+                    <div class="float-left w-100">
+                      <div class="row less-row">
+                        <div class="col-lg-4 mt-2 col-md-12">
+                          <div class="color_picker">
+                            <input
+                              style="color: transparent !important"
+
+                              id="color_1"
+                              formControlName="color_1"
+                              value="#000000"
+                            />
+                          </div>
+                          <div class="c-input" style="width: calc(100% - 50px)">
+                            <input
+                              maxlength="21"
+                              placeholder="Pantone"
+                              style="height: 45px; color: #333 !important"
+                              class="form-control"
+                              id="color_1_pantone"
+                              formControlName="color_1_pantone"
+                            />
+                          </div>
+                          <div
+                            style="font-size: small;"
+                            class="text-danger text-left"
+                            *ngIf="
+                              form.controls.color_1_pantone.invalid &&
+                              (form.controls.color_1_pantone.touched ||
+                                form.controls.color_1_pantone.dirty)
+                            "
+                          >
+                            Characters should be less than or equal to 20
+                          </div>
+                        </div>
+
+                        <div class="col-lg-4 mt-2 col-md-12">
+                          <div class="color_picker">
+                            <input
+                              id="color_2"
+                              formControlName="color_2"
+                              value="#00bff3"
+                            />
+                          </div>
+                          <div class="c-input" style="width: calc(100% - 50px)">
+                            <input
+                              maxlength="21"
+                              placeholder="Pantone"
+                              style="height: 45px; color: #333 !important"
+                              class="form-control"
+                              id="color_2_pantone"
+                              formControlName="color_2_pantone"
+                            />
+                          </div>
+                          <div
+                            style="font-size: small;"
+                            class="text-danger text-left"
+                            *ngIf="
+                              form.controls.color_2_pantone.invalid &&
+                              (form.controls.color_2_pantone.touched ||
+                                form.controls.color_2_pantone.dirty)
+                            "
+                          >
+                            Characters should be less than or equal to 20
+                          </div>
+                        </div>
+                        <div class="col-lg-4 mt-2 col-md-12">
+                          <div class="color_picker">
+                            <input
+                              id="color_3"
+                              formControlName="color_3"
+                              value="#ed4cac"
+                            />
+                          </div>
+                          <div class="c-input" style="width: calc(100% - 50px)">
+                            <input
+                            maxlength="21"
+                              placeholder="Pantone"
+                              style="height: 45px; color: #333 !important"
+                              class="form-control"
+                              id="color_3_pantone"
+                              formControlName="color_3_pantone"
+                            />
+                          </div>
+                          <div
+                            style="font-size: small;"
+                            class="text-danger text-left"
+                            *ngIf="
+                              form.controls.color_3_pantone.invalid &&
+                              (form.controls.color_3_pantone.touched ||
+                                form.controls.color_3_pantone.dirty)
+                            "
+                          >
+                            Characters should be less than or equal to 20
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <label class="c-label w-100 mb-1 mt-3"
+                      >Click to Select Color</label
+                    >
+                    <div class="float-left w-100">
+                      <div class="row less-row">
+                        <div class="col-lg-4 mt-2">
+                          <div class="color_picker">
+                            <input
+                              id="color_4"
+                              formControlName="color_4"
+                              value="#ffe33c"
+                            />
+                          </div>
+                          <div class="c-input" style="width: calc(100% - 50px)">
+                            <input
+                            maxlength="21"
+                              placeholder="Pantone"
+                              style="height: 45px; color: #333 !important"
+                              class="form-control"
+                              id="color_4_pantone"
+                              formControlName="color_4_pantone"
+                            />
+                          </div>
+                          <div
+                            style="font-size: small;"
+                            class="text-danger text-left"
+                            *ngIf="
+                              form.controls.color_4_pantone.invalid &&
+                              (form.controls.color_4_pantone.touched ||
+                                form.controls.color_4_pantone.dirty)
+                            "
+                          >
+                            Characters should be less than or equal to 20
+                          </div>
+                        </div>
+                        <div class="col-lg-4 mt-2">
+                          <div class="color_picker">
+                            <input
+                              id="color_5"
+                              formControlName="color_5"
+                              value="#25b666"
+                            />
+                          </div>
+                          <div class="c-input" style="width: calc(100% - 50px)">
+                            <input
+                            maxlength="21"
+                              placeholder="Pantone"
+                              style="height: 45px; color: #333 !important"
+                              class="form-control"
+                              id="color_5_pantone"
+                              formControlName="color_5_pantone"
+                            />
+                          </div>
+                          <div
+                            style="font-size: small;"
+                            class="text-danger text-left"
+                            *ngIf="
+                              form.controls.color_5_pantone.invalid &&
+                              (form.controls.color_5_pantone.touched ||
+                                form.controls.color_5_pantone.dirty)
+                            "
+                          >
+                            Characters should be less than or equal to 20
+                          </div>
+                        </div>
+                        <div class="col-lg-4 mt-2">
+                          <div class="color_picker">
+                            <input
+                              id="color_6"
+                              formControlName="color_6"
+                              value="#444444"
+                            />
+                          </div>
+                          <div class="c-input" style="width: calc(100% - 50px)">
+                            <input
+                            maxlength="21"
+                              placeholder="Pantone"
+                              style="height: 45px; color: #333 !important"
+                              class="form-control"
+                              id="color_6_pantone"
+                              formControlName="color_6_pantone"
+                            />
+                          </div>
+                          <div
+                            style="font-size: small;"
+                            class="text-danger text-left"
+                            *ngIf="
+                              form.controls.color_6_pantone.invalid &&
+                              (form.controls.color_6_pantone.touched ||
+                                form.controls.color_6_pantone.dirty)
+                            "
+                          >
+                            Characters should be less than or equal to 20
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12">
+                    <div class="c-input mt-2">
+                      <input
+                        type="text"
+                        formControlName="color_notes"
+                        placeholder="Color Notes"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 pt-2">
+          <!-- <label class="c-label w-100 c-label-icon mt-3"
+            ><img
+              class="float-left mr-2"
+              src="assets/images/resource/icons/icon-multiple-shirts.png"
+              alt=""
+            />
+            Product
+          </label> -->
+          <div class="slider-sec">
+            <ul id="slider-product">
+              <li *ngFor="let item of productArrGrouped; let i = index">
+                <div class="d-field mt-2 pt-1">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="row align-items-center">
+                        <div class="col-lg-12">
+                          <div class="row align-items-center">
+                            <div class="col-lg-12">
+                              <div class="row less-row align-items-center">
+                                <div class="col-3">
+                                  <!-- <label class="c-label float-left"
+                                    >Product {{ i + 1 }}
+                                  </label> -->
+                                  <label class="c-label w-100 c-label-icon mt-1"
+                                    ><img
+                                      style="height: 32px"
+                                      class="float-left mr-2"
+                                      src="assets/images/resource/icons/icon-multiple-shirts.png"
+                                      alt=""
+                                    />
+                                    Product {{ i + 1 }}
+                                  </label>
+                                </div>
+                                <div class="col-3">
+                                  <div class="c-select2">
+                                    <select
+                                      id="product_apparel_source_{{ i + 1 }}"
+                                      formControlName="product_apparel_source_{{
+                                        i + 1
+                                      }}"
+                                    >
+                                      <option value="" selected disabled>
+                                        Apparel Source
+                                      </option>
+                                      <option value="s_and_s">S&S</option>
+                                      <option value="san_mar">San Mar</option>
+                                      <option value="next_level_la">
+                                        Next Level LA
+                                      </option>
+                                      <option value="bella_la">Bella LA</option>
+                                      <option value="pagoda">Pagoda</option>
+                                      <option value="provided">Provided</option>
+                                      <option value="amazon">Amazon</option>
+                                      <option value="apparel_others">
+                                        Other
+                                      </option>
+                                    </select>
+                                  </div>
+                                </div>
+                                <div class="col-2">
+                                  <div class="c-input">
+                                    <input
+                                      formControlName="product_apparel_source_other_{{
+                                        i + 1
+                                      }}"
+                                      type="text"
+                                      placeholder="Other Source"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="col">
+                                  <div class="c-input">
+                                    <input
+                                      formControlName="per_piece_{{ i + 1 }}"
+                                      type="text"
+                                      placeholder="Price Per Price"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="col">
+                                  <div class="c-input">
+                                    <input
+                                      formControlName="product_user_other_type_{{
+                                        i + 1
+                                      }}"
+                                      type="text"
+                                      placeholder="Alt Price"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="col">
+                                  <div class="c-pick sm float-right">
+                                    <input
+                                      type="checkbox"
+                                      id="tax_{{ i + 1 }}"
+                                      formControlName="tax_{{ i + 1 }}"
+                                      checked="this.form.tax_{{ i + 1 }}.value"
+                                    />
+                                    <label for="tax_{{ i + 1 }}">Tax</label>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-field mt-2">
+                  <div class="row less-row">
+                    <div class="col-lg-12">
+                      <div class="row less-row">
+                        <div class="col">
+                          <div class="c-select2">
+                            <select
+                              data-placeholder="Type"
+                              formControlName="product_user_type_{{ i + 1 }}"
+                              name="demographic_{{ i + 1 }}[]"
+                              id="product_user_type_{{ i + 1 }}"
+                            >
+                              <option value="youth">Youth</option>
+                              <option value="women">Women</option>
+                              <option value="men">Men</option>
+                              <option value="youth">Youth</option>
+                              <option value="toddler">Toddler</option>
+                              <option value="infant">Infant</option>
+                              <option value="boys">Boys</option>
+                              <option value="girls">Girls</option>
+                              <option value="unisex">Unisex</option>
+                              <option value="other">Other</option>
+
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="c-input">
+                            <input
+                              type="text"
+                              formControlName="item_number_{{ i + 1 }}"
+                              placeholder="Item #"
+                            />
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="c-input">
+                            <input
+                              type="text"
+                              formControlName="apparel_type_{{ i + 1 }}"
+                              placeholder="Apparel Type"
+                            />
+                          </div>
+                        </div>
+                        <div class="col">
+                          <div class="c-input">
+                            <input
+                              type="text"
+                              formControlName="product_color_{{ i + 1 }}"
+                              placeholder="Color"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="c-input">
+                            <input
+                              formControlName="product_description_{{ i + 1 }}"
+                              type="text"
+                              placeholder="Additional Description"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-field mt-2">
+                  <div class="row less-row">
+                    <div class="col max-col-50">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="xs_{{ i + 1 }}"
+                          placeholder="XS #"
+                        />
+                      </div>
+                    </div>
+                    <div class="col max-col-50">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="s_{{ i + 1 }}"
+                          placeholder="S #"
+                        />
+                      </div>
+                    </div>
+                    <div class="col max-col-50">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="m_{{ i + 1 }}"
+                          placeholder="M #"
+                        />
+                      </div>
+                    </div>
+                    <div class="col max-col-50">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="l_{{ i + 1 }}"
+                          placeholder="L #"
+                        />
+                      </div>
+                    </div>
+                    <div class="col max-col-50">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="xl_{{ i + 1 }}"
+                          placeholder="XL #"
+                        />
+                      </div>
+                    </div>
+                    <div class="col max-col-50">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="xxl_{{ i + 1 }}"
+                          placeholder="XXL #"
+                        />
+                      </div>
+                    </div>
+                    <div class="col max-col">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="xxxl_{{ i + 1 }}"
+                          placeholder="XXXL #"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="d-field mt-2">
+                  <div class="row less-row">
+                    <div class="col">
+                      <div class="c-select2">
+                        <select
+                          id="other_size_1_{{ i + 1 }}"
+                          formControlName="other_size_1_{{ i + 1 }}"
+                        >
+                          <option value="" selected disabled>Size</option>
+                          <option value="4XL">4XL</option>
+                          <option value="5XL">5XL</option>
+                          <option value="6XL">6XL</option>
+                          <option value="7XL">7XL</option>
+                          <option value="one_size">One Size</option>
+                          <option value="NB">NB</option>
+                          <option value="3MO">3MO</option>
+                          <option value="6MO">6MO</option>
+                          <option value="12MO">12MO</option>
+                          <option value="18MO">18MO</option>
+                          <option value="24MO">24MO</option>
+                          <option value="2T">2T</option>
+                          <option value="3T">3T</option>
+                          <option value="4T">4T</option>
+                          <option value="5T">5T</option>
+                          <option value="6T">6T</option>
+                          <option value="XXS">XXS</option>
+                          <option value="S_M">S/M</option>
+                          <option value="M_L">M/L</option>
+                          <option value="L_XL">L/XL</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col d-none">
+                      <div class="c-input">
+                        <input
+                          type="text"
+                          formControlName="other_size_text_1_{{ i + 1 }}"
+                          placeholder="Other Sizes"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-input">
+                        <input
+                          type="text"
+                          formControlName="pcs_1_{{ i + 1 }}"
+                          placeholder="PCS" disabled
+                        />
+                        <div
+                          class="text-danger text-left"
+                          *ngIf="
+                            form.controls['pcs_1_'+ (i + 1) ].invalid &&
+                            (form.controls['pcs_1_'+ (i + 1)].touched ||
+                              form.controls['pcs_1_'+ (i + 1)].dirty)
+                          "
+                        >
+                          Required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-select2">
+                        <select
+                          formControlName="other_size_2_{{ i + 1 }}"
+                          id="other_size_2_{{ i + 1 }}"
+                        >
+                          <option value="" selected disabled>Size</option>
+                          <option value="4XL">4XL</option>
+                          <option value="5XL">5XL</option>
+                          <option value="6XL">6XL</option>
+                          <option value="7XL">7XL</option>
+                          <option value="one_size">One Size</option>
+                          <option value="NB">NB</option>
+                          <option value="3MO">3MO</option>
+                          <option value="6MO">6MO</option>
+                          <option value="12MO">12MO</option>
+                          <option value="18MO">18MO</option>
+                          <option value="24MO">24MO</option>
+                          <option value="2T">2T</option>
+                          <option value="3T">3T</option>
+                          <option value="4T">4T</option>
+                          <option value="5T">5T</option>
+                          <option value="6T">6T</option>
+                          <option value="XXS">XXS</option>
+                          <option value="S_M">S/M</option>
+                          <option value="M_L">M/L</option>
+                          <option value="L_XL">L/XL</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col d-none">
+                      <div class="c-input">
+                        <input
+                          type="text"
+                          formControlName="other_size_text_2_{{ i + 1 }}"
+                          placeholder="Other Sizes"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="pcs_2_{{ i + 1 }}"
+                          placeholder="PCS" disabled
+                        />
+                        <div
+                          class="text-danger text-left"
+                          *ngIf="
+                            form.controls['pcs_2_'+ (i + 1) ].invalid &&
+                            (form.controls['pcs_2_'+ (i + 1)].touched ||
+                              form.controls['pcs_2_'+ (i + 1)].dirty)
+                          "
+                        >
+                          Required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-select2">
+                        <select
+                          formControlName="other_size_3_{{ i + 1 }}"
+                          id="other_size_3_{{ i + 1 }}"
+                        >
+                          <option value="" selected disabled>Size</option>
+                          <option value="4XL">4XL</option>
+                          <option value="5XL">5XL</option>
+                          <option value="6XL">6XL</option>
+                          <option value="7XL">7XL</option>
+                          <option value="one_size">One Size</option>
+                          <option value="NB">NB</option>
+                          <option value="3MO">3MO</option>
+                          <option value="6MO">6MO</option>
+                          <option value="12MO">12MO</option>
+                          <option value="18MO">18MO</option>
+                          <option value="24MO">24MO</option>
+                          <option value="2T">2T</option>
+                          <option value="3T">3T</option>
+                          <option value="4T">4T</option>
+                          <option value="5T">5T</option>
+                          <option value="6T">6T</option>
+                          <option value="XXS">XXS</option>
+                          <option value="S_M">S/M</option>
+                          <option value="M_L">M/L</option>
+                          <option value="L_XL">L/XL</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col d-none">
+                      <div class="c-input">
+                        <input
+                          type="text"
+                          formControlName="other_size_text_3_{{ i + 1 }}"
+                          placeholder="Other Sizes"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="pcs_3_{{ i + 1 }}"
+                          placeholder="PCS" disabled
+                        />
+                        <div
+                          class="text-danger text-left"
+                          *ngIf="
+                            form.controls['pcs_3_'+ (i + 1) ].invalid &&
+                            (form.controls['pcs_3_'+ (i + 1)].touched ||
+                              form.controls['pcs_3_'+ (i + 1)].dirty)
+                          "
+                        >
+                          Required
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-select2">
+                        <select
+                          formControlName="other_size_4_{{ i + 1 }}"
+                          id="other_size_4_{{ i + 1 }}"
+                        >
+                          <option value="" selected disabled>Size</option>
+                          <option value="4XL">4XL</option>
+                          <option value="5XL">5XL</option>
+                          <option value="6XL">6XL</option>
+                          <option value="7XL">7XL</option>
+                          <option value="one_size">One Size</option>
+                          <option value="NB">NB</option>
+                          <option value="3MO">3MO</option>
+                          <option value="6MO">6MO</option>
+                          <option value="12MO">12MO</option>
+                          <option value="18MO">18MO</option>
+                          <option value="24MO">24MO</option>
+                          <option value="2T">2T</option>
+                          <option value="3T">3T</option>
+                          <option value="4T">4T</option>
+                          <option value="5T">5T</option>
+                          <option value="6T">6T</option>
+                          <option value="XXS">XXS</option>
+                          <option value="S_M">S/M</option>
+                          <option value="M_L">M/L</option>
+                          <option value="L_XL">L/XL</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col d-none">
+                      <div class="c-input">
+                        <input
+                          type="text"
+                          formControlName="other_size_text_4_{{ i + 1 }}"
+                          placeholder="Other Sizes"
+                        />
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="c-input">
+                        <input
+                          type="text"
+
+                          formControlName="pcs_4_{{ i + 1 }}"
+                          placeholder="PCS" disabled
+                        />
+                        <div
+                          class="text-danger text-left"
+                          *ngIf="
+                            form.controls['pcs_4_'+ (i + 1) ].invalid &&
+                            (form.controls['pcs_4_'+ (i + 1)].touched ||
+                              form.controls['pcs_4_'+ (i + 1)].dirty)
+                          "
+                        >
+                          Required
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </li>
+            </ul>
+          </div>
+          <div class="d-field mt-4">
+            <div class="row">
+              <div class="col-lg-6">
+                <div class="row less-row">
+
+
+                  <div class="col-lg-12 mb-3">
+                    <div class="row">
+                      <label
+                        class="col c-label icon-lg c-label-icon"
+                        style="font-size: small"
+                      >
+                        <img
+                          style="width: 32px"
+                          class="float-left mr-2"
+                          src="assets/images/resource/icons/icon-payment.png"
+                          alt=""
+                        />
+                        Pay.
+                      </label>
+                      <div class="col-9">
+                                            <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="payment_invoice_url"
+                        placeholder="Invoice URL"
+                      />
+                    </div>
+
+
+
+
+
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                  <div class="col-lg-12 mb-3">
+                    <div class="row">
+                      <label
+                        class="col c-label icon-lg c-label-icon"
+                        style="font-size: small"
+                      >
+                        <img
+                          style="width: 32px"
+                          class="float-left mr-2"
+                          src="assets/images/resource/icons/icon-arrival.png"
+                          alt=""
+                        />
+                        Arvl
+                      </label>
+                      <div class="col-9">
+                        <div>
+                          <div class="c-select2">
+                            <select
+                              formControlName="arrival_type"
+                              id="arrivalTime"
+                            >
+                              <option value="" selected disabled>
+                                Estimated Arrival Time (Required)
+                              </option>
+                              <option value="7_10_days">7-10 Days</option>
+                              <option value="5_business_days">
+                                5 Business Days
+                              </option>
+                              <option value="eow">EOW</option>
+                              <option value="3_days">3 Days</option>
+                              <option value="2_days">2 Days</option>
+                              <option value="next_day">Next Day</option>
+                              <option value="arrival_others">Custom</option>
+                            </select>
+                            <div
+                              class="text-danger text-left"
+                              *ngIf="
+                                form.controls.arrival_type.invalid &&
+                                (form.controls.arrival_type.touched ||
+                                  form.controls.arrival_type.dirty)
+                              "
+                            >
+                              Required field
+                            </div>
+                          </div>
+                          <div
+                            class="c-input mt-2"
+                            [hidden]="!showArrivalOthers"
+                          >
+                            <input
+                              type="text"
+                              formControlName="arrival_other"
+                              placeholder="Please specifiy others"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+
+
+                  <div class="col-lg-12 mb-3">
+                    <div class="row">
+                      <label
+                        class="col c-label icon-lg c-label-icon"
+                        style="font-size: small"
+                      >
+                        <img
+                          style="width: 32px"
+                          class="float-left mr-2"
+                          src="assets/images/resource/icons/icon-ship.png"
+                          alt=""
+                        />
+                        Ship
+                      </label>
+                      <div class="col-9">
+                        <div class="c-select2">
+                          <select
+                          formControlName="ship_type"
+                          id="shippingMethod"
+                          >
+                            <option value="" selected disabled>
+                              Shipping Method
+                            </option>
+                            <option value="pickup">Pickup</option>
+                            <option value="courier">Courier</option>
+                            <option value="hand_deliver">Hand Deliver</option>
+                            <option value="shipping_others">Other</option>
+                            <option value="USPS First Class Mail">USPS First Class Mail</option>
+                            <option value="USPS Media Mail">USPS Media Mail</option>
+                            <option value="USPS Parcel Select Ground">USPS Parcel Select Ground</option>
+                            <option value="USPS Priority Mail">USPS Priority Mail</option>
+                            <option value="USPS Priority Mail Express">USPS Priority Mail Express</option>
+                            <option value="FedEx Ground">FedEx Ground</option>
+                            <option value="FedEx Home Delivery">FedEx Home Delivery</option>
+                            <option value="FedEx 2Day">FedEx 2Day</option>
+                            <option value="FedEx 2Day A.M.">FedEx 2Day A.M.</option>
+                            <option value="FedEx Express Saver">FedEx Express Saver</option>
+                            <option value="FedEx Standard Overnight">FedEx Standard Overnight</option>
+                            <option value="FedEx Priority Overnight">FedEx Priority Overnight</option>
+                            <option value="FedEx First Overnight">FedEx First Overnight</option>
+                            <option value="FedEx 1Day Freight">FedEx 1Day Freight</option>
+                            <option value="FedEx 2Day Freight">FedEx 2Day Freight</option>
+                            <option value="FedEx 3Day Freight">FedEx 3Day Freight</option>
+                            <option value="FedEx First Overnight Freight">FedEx First Overnight Freight</option>
+                            <option value="UPS Ground">UPS Ground</option>
+                            <option value="UPS 3 Day Select">UPS 3 Day Select</option>
+                            <option value="UPS 2nd Day Air">UPS 2nd Day Air</option>
+                            <option value="UPS Next Day Air Saver">UPS Next Day Air Saver</option>
+                            <option value="UPS Next Day Air">UPS Next Day Air</option>
+                            <option value="UPS Next Day Air Early">UPS Next Day Air Early</option>
+                            <option value="UPS 2nd Day Air AM">UPS 2nd Day Air AM</option>
+
+                          </select>
+                        </div>
+                        <div
+                          class="c-input mt-2"
+                          [hidden]="!showShippingOthers"
+                        >
+                          <input
+                            type="text"
+                            formControlName="ship_notes"
+                            placeholder="Please specifiy others"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12" id="tracking_url">
+                    <div class="c-input">
+                      <textarea
+                        type="text"
+                        formControlName="customer_track_url"
+                        placeholder="Tracking URL"
+                      ></textarea>
+                    </div>
+                  </div>
+
+
+                  <div class="col-lg-12 mt-3">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_notes"
+                        placeholder="Notes"
+                      />
+                      <!-- <textarea
+                        formControlName="customer_notes"
+                        placeholder="Notes"
+                      ></textarea> -->
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mt-3">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="weight"
+                        placeholder="Weight"
+                      />
+                      <!-- <textarea
+                        formControlName="customer_notes"
+                        placeholder="Notes"
+                      ></textarea> -->
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mt-3">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="boxes"
+                        placeholder="Boxes"
+                      />
+                      <!-- <textarea
+                        formControlName="customer_notes"
+                        placeholder="Notes"
+                      ></textarea> -->
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mt-3">
+                    <label class="c-label icon-lg d-none">
+                      Shipping Label
+                    </label>
+                    <div class="c-input file">
+                      <label for="file-zero"
+                        ><input
+                          (change)="
+                            handleFileSelect($event, 'shipping_label_url')
+                          "
+                          type="file"
+                          class=""
+                          id="file-zero"
+                          placeholder="Address"
+
+                        />
+                        <p id="shipping_label_url">
+                          {{form.controls.shipping_label_url.value?form.controls.shipping_label_url.value.substring(form.controls.shipping_label_url.value.lastIndexOf("/")+1,form.controls.shipping_label_url.value.length):'Shipping Label'}}
+                        </p>
+                      </label>
+                    </div>
+                    <label
+                      *ngIf="form.controls.shipping_label_url.value"
+                      class="mt-2 d-none"
+                      ><a
+                        [href]="form.controls.shipping_label_url.value"
+                        target="_blank"
+                        >Uploaded File</a
+                      ></label
+                    >
+                  </div>
+                  <div class="col-lg-6 mt-3">
+                    <label class="c-label icon-lg d-none"> Packing List </label>
+                    <div class="c-input file">
+                      <label for="file-one"
+                        ><input
+                          (change)="
+                            handleFileSelect($event, 'packing_list_url')
+                          "
+                          type="file"
+                          id="file-one"
+                          class=""
+                          placeholder="State"
+                        />
+                        <p id="packing_list_url">
+                          {{form.controls.packing_list_url.value?form.controls.packing_list_url.value.substring(form.controls.packing_list_url.value.lastIndexOf("/")+1,form.controls.packing_list_url.value.length):'Packing List'}}
+                        </p>
+                      </label>
+                    </div>
+                    <label
+                      *ngIf="form.controls.packing_list_url.value"
+                      class="mt-2 d-none"
+                      ><a
+                        [href]="form.controls.packing_list_url.value"
+                        target="_blank"
+                        >Uploaded File</a
+                      ></label
+                    >
+                  </div>
+
+                  <div class="col-lg-12 d-none" *ngIf="this.editMode">
+                    <div class="c-input"><br>
+                        <label class="c-label w-100 mb-1">Shipping Labels (Readonly)</label>
+                      <textarea
+                        type="text"
+                        id="shipping_label_displays"
+                        placeholder="Shipping Label URL's"
+                        readonly
+                      ></textarea>
+                    </div>
+                  </div>
+
+
+
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <div class="row less-row">
+
+
+
+                                    <div class="col-lg-8 mb-3">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="invoice_number"
+                        placeholder="Invoice Number"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-4 mb-3">
+                    <div class="c-pick sm float-left mt-3">
+                      <input
+                        type="checkbox"
+                        id="terms"
+                        formControlName="payment_terms"
+                        [checked]="form.controls.payment_terms.value"
+                      />
+                      <label for="terms">Terms</label>
+                    </div>
+                  </div>
+
+
+
+
+
+
+
+                  <div class="col-lg-8 mb-3">
+                    <div class="c-input with-icon">
+                      <input
+                        formControlName="arrival_date"
+                        type="text"
+                        class=""
+                        id="datepicker"
+                        placeholder="YYYY-MM-DD (Required)"
+                        autocapitalize="off"
+                        autocomplete="off"
+                        aria-autocomplete="none"
+                      />
+                      <img
+                        class="float-left mr-2"
+                        src="assets/images/resource/icons/date.png"
+                        alt=""
+                      />
+                    </div>
+                    <div
+                      class="text-danger text-left"
+                      *ngIf="
+                        form.controls.arrival_date.invalid &&
+                        (form.controls.arrival_date.touched ||
+                          form.controls.arrival_date.dirty)
+                      "
+                    >
+                      Required field
+                    </div>
+                  </div>
+                  <div class="col-lg-4 mb-3">
+                    <div class="c-pick sm float-left mt-3">
+                      <input
+                        type="checkbox"
+                        id="due"
+                        formControlName="hard_due_date"
+                        [checked]="form.controls.hard_due_date.value"
+                      />
+                      <label for="due">Hard Date</label>
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_name"
+                        placeholder="Name"
+
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_attn"
+                        placeholder="Company"
+
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 mt-3 n-m-t">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_address"
+                        placeholder="Street"
+
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-12 mt-3 n-m-t">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_address_2"
+                        placeholder="City"
+
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-lg-6 mt-3 mb-2 n-m-t n-m-b">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_state"
+                        placeholder="State"
+
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6 mt-3 mb-2 n-m-t n-m-b">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_zipcode"
+                        placeholder="Zip Code"
+
+                      />
+                    </div>
+                  </div>
+                  <div class="col-lg-6 pt-1 n-m-t">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_email"
+                        placeholder="Email"
+
+                      />
+                      <div
+                        class="text-left text-danger"
+                        *ngIf="
+                          form.controls.customer_email.invalid &&
+                          (form.controls.customer_email.touched ||
+                            form.controls.customer_email.dirty)
+                        "
+                      >
+                        A valid email is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-6 pt-1 n-m-t">
+                    <div class="c-input">
+                      <input
+                        type="text"
+                        formControlName="customer_phone"
+                        placeholder="Phone"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-field mt-1 pt-3 n-m-t">
+            <div class="row">
+              <div class="col-lg-6">
+                <button type="button" (click)="addOrder()" *ngIf="!this.editMode" class="btn btn-large primary">
+                  Submit
+                </button>
+
+                <button type="button" (click)="addOrder()" *ngIf="this.editMode" class="btn btn-large primary">
+                  Update
+                </button>
+              </div>
+              <div class="col-lg-6">
+                <button
+                  type="button"
+                  (click)="handleCancel()"
+                  class="btn btn-large danger"
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Main Wrap -->
+
+<div id="dialog-confirm" title="Confirmation">
+  <p id="dialog-content"></p>
+</div>
+
+<div class="modal fade modal-lg" id="qrCodeDialog" tabindex="-1" role="dialog" aria-labelledby="shipstationTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header px-5">
+                <h5 class="modal-title" id="qrCodeTitle">Codes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="centered-box" id="pdfContainer">
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <h1 class="fa-4x font-weight-bold">#{{orderId}} <span id='order_name'>{{orderName}}</span></h1>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-4 text-center">
+                            <div class="code" *ngIf="qrURLString">
+                                <qrcode elementType="img" [qrdata]="qrURLString" [width]="250"></qrcode>
+                                <span class="font-weight-bold">View</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div class="code" *ngIf="qrIDString">
+                                <qrcode elementType="img" [qrdata]="qrIDString" [width]="250"></qrcode>
+                                <span class="font-weight-bold">Dashboard</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div class="code" *ngIf="qrURLShippingString">
+                                <qrcode elementType="img" [qrdata]="qrURLShippingString" [width]="250"></qrcode>
+                                <span class="font-weight-bold">Ship</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-right mt-2">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

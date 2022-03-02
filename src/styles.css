@@ -1,0 +1,69 @@
+/* You can add global styles to this file, and also import other style files */
+
+.hidden {
+    visibility: hidden !important;
+}
+
+.visible {
+    visibility: visible !important;
+}
+
+.artSlider .slick-prev {
+    width: 12px;
+    height: auto;
+    background-color: black;
+    top: 42px;
+    left: 42%;
+}
+
+.artSlider .slick-next {
+    width: 12px;
+    height: auto;
+    background-color: black;
+    top: 42px;
+    right: 44%;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    right: .3em;
+    top: 50%;
+    width: 20px;
+    margin: -10px 0 0 0;
+    padding: 1px;
+    height: 20px;
+    display: none;
+}
+
+.notifier__notification-message {
+    color: white;
+}
+
+.paginationContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.paginationCountContainer {
+    font-size: small;
+    margin-left: 50px;
+    background: whitesmoke;
+    padding: 10px;
+}
+
+.paginationButtonsContainer {
+    font-size: small;
+    margin-right: 50px;
+    padding: 10px;
+}
+
+#myTable_info {
+    display: none !important;
+}
+
+.shipping-frame {
+    display: flex;
+    width: 100%;
+    height: 550px;
+}

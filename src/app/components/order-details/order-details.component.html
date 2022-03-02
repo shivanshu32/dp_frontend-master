@@ -1,0 +1,668 @@
+<div class="main-wrap">
+  <app-navbar></app-navbar>
+
+  <ng-container *ngIf="multipleProducts.length > 0">
+    <section
+      class="newOrderSection"
+      *ngFor="let order of multipleProducts; let i = index"
+    >
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-6 colorWrapper">
+                <div class="row no-gutters">
+                  <div class="col-md-4">
+                    <div class="colorContainer topLeftBorder" [ngStyle]="{ 'background-color': order.color_1 }" [title]="order.color_1_pantone"><span *ngIf="order.color_1_pantone" class="colorText">{{ handleLongString(order.color_1_pantone,15) }}</span></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="colorContainer" [ngStyle]="{ 'background-color': order.color_2 }" [title]="order.color_2_pantone"><span *ngIf="order.color_2_pantone" class="colorText">{{ handleLongString(order.color_2_pantone,15) }}</span></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="colorContainer topRightBorder" [ngStyle]="{ 'background-color': order.color_3 }" [title]="order.color_3_pantone"><span *ngIf="order.color3_pantone" class="colorText">{{ handleLongString(order.color_3_pantone,15) }}</span></div>
+                  </div>
+                </div>
+                <div class="row no-gutters">
+                  <div class="col-md-4">
+                    <div class="colorContainer bottomLeftBorder" [ngStyle]="{ 'background-color': order.color_4 }" [title]="order.color_4_pantone"><span *ngIf="order.color_4_pantone" class="colorText">{{ handleLongString(order.color_4_pantone,15) }}</span></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="colorContainer" [ngStyle]="{ 'background-color': order.color_5 }" [title]="order.color_5_pantone"><span *ngIf="order.color_5_pantone" class="colorText">{{ handleLongString(order.color_5_pantone,15) }}</span></div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="colorContainer bottomRightBorder" [ngStyle]="{ 'background-color': order.color_6 }" [title]="order.color_6_pantone"><span *ngIf="order.color_6_pantone" class="colorText">{{ handleLongString(order.color_6_pantone,15) }}</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="row no-gutters">
+                  <div class="col-md-6">
+                    <div class="sizeContainer topLeftBorder">
+                      <div class="position">Front</div>
+                      <div class="size" [title]="order.position_front">{{ handleLongString(order.position_front,20) }}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="sizeContainer topRightBorder">
+                      <div class="position">Back</div>
+                      <div class="size" [title]="order.position_back">{{ handleLongString(order.position_back,20) }}</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row no-gutters">
+                  <div class="col-md-6">
+                    <div class="sizeContainer bottomLeftBorder">
+                      <div class="position">Left/Right</div>
+                      <div class="size" [title]="order.position_right_left">{{ handleLongString(order.position_right_left,20) }}</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="sizeContainer bottomRightBorder">
+                      <div class="position">Additional</div>
+                      <div class="size" [title]="order.position_additional">{{ handleLongString(order.position_additional,20) }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <div class="previewContainer">
+                  <a href="{{ order.proof_url }}" target="blank"
+                    ><img
+                      style="height: 100%; display: block; margin: 0px auto"
+                      src="{{ order.proof_url }}"
+                      class="img-fluid mx-auto d-block"
+                  /></a>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-md-12">
+                <div class="additionalInfoContainer">
+                  <div class="text-center mr-1">Additional Info:</div>
+                  <div class="text-center">
+                    <b>{{order.position_notes}}</b>
+                  </div>
+                </div>
+              </div>
+               
+            </div>
+          </div>
+
+          <div class="col-md-6">
+
+            <div class="rightContainer pb-4">
+              <div class="row no-gutters pt-3 mb-3">
+                <div class="col-md-2">
+                  <div class="idContainer">#{{order.id}}</div>
+                </div>
+                <div class="col-md-10 quickStatsParent">
+                  <div class="row no-gutters">
+                    <div class="col-md-4">Job: <b>{{order.name}}</b></div>
+                    <div class="col-md-4">Customer: <b>{{order.customer_name}}</b></div>
+                    <div class="col-md-4">Film: <b>{{order.film == '1'?'Yes':'No'}}</b></div>
+                  </div>
+                  <div class="row no-gutters mt-2">
+                    <div class="col-md-4">Date: <b>{{order.created_at | date}}</b></div>
+                    <div class="col-md-4">Delivery: <b>{{order.arrival_date | date}}</b></div>
+                    <div class="col-md-4">Printer: <b>{{order.printer?order.printer.title:'N/A'}}</b></div>
+                  </div>
+                </div>
+              </div>
+              <hr>
+
+              <div class="mt-4"></div>
+              <ng-container *ngFor="let item of order.products; let i = index">
+                <div class="productContainer mb-4">
+                  <div class="row no-gutters">
+                    <div class="col bg-gray">
+                      {{
+                        item["product_user_type_" + (i + 1)]
+                          ? item["product_user_type_" + (i + 1)]
+                          : ""
+                      }}
+                    </div>
+                    <div class="col">
+                      {{
+                        item["apparel_type_" + (i + 1)]
+                          ? item["apparel_type_" + (i + 1)]
+                          : ""
+                      }}
+                    </div>
+                    <div class="col-md-2 bg-gray">
+                      {{
+                        item["product_description_" + (i + 1)]
+                          ? item["product_description_" + (i + 1)]
+                          : ""
+                      }}
+                    </div>
+                    <div class="col">
+                      {{
+                        item["product_color_" + (i + 1)]
+                          ? item["product_color_" + (i + 1)]
+                          : ""
+                      }}
+                    </div>
+                    <div class="col-md-5 bg-gray">
+                        <div class="productSizeContainer">
+                          <div class="productSize" *ngFor="let p of getProductSizes(item,(i+1))">
+                            <span>{{p.size | uppercase}}{{p.size && p.value ? ':':''}}{{p.value}}</span>
+                          </div>
+                          <!-- <div class="productSize"><span>{{ item["xs_" + (i + 1)] ? "XS" + item["xs_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize"><span>{{ item["s_" + (i + 1)] ? "S" + item["s_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize"><span>{{ item["m_" + (i + 1)] ? "M" + item["m_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize"><span>{{ item["l_" + (i + 1)] ? "L"+item["l_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize"><span>{{ item["xl_" + (i + 1)] ? "XL"+item["xl_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize"><span>{{ item["xxl_" + (i + 1)] ? "XXL"+item["xxl_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize"><span>{{ item["xxxl_" + (i + 1)] ? "XXXL"+item["xxxl_" + (i + 1)] : "" }}</span></div>
+                          <div class="productSize">{{item["other_size_1_" + (i + 1)]
+                                      ? item["other_size_1_" + (i + 1)]
+                                      : ""
+                                  }}<span>{{
+                                    item["pcs_1_" + (i + 1)] ? item["pcs_1_" + (i + 1)] : ""
+                                  }}</span>
+                          </div>
+                          <div class="productSize">{{item["other_size_2_" + (i + 1)]
+                                      ? item["other_size_2_" + (i + 1)]
+                                      : ""
+                                  }}<span>{{
+                                    item["pcs_2_" + (i + 1)] ? item["pcs_2_" + (i + 1)] : ""
+                                  }}</span>
+                          </div>
+                          <div class="productSize">{{item["other_size_3_" + (i + 1)]
+                                      ? item["other_size_3_" + (i + 1)]
+                                      : ""
+                                  }}<span>{{
+                                    item["pcs_3_" + (i + 1)] ? item["pcs_3_" + (i + 1)] : ""
+                                  }}</span>
+                          </div> -->
+                        </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </ng-container>
+              <div class="countContainer text-center">
+                Count: <b>{{order.total_product_count}}</b>
+              </div>
+            </div>
+
+            <div id="art_files" *ngIf="this.hasValidCode">
+              <div class="additionalInfoContainer">
+                <div class="mr-1">Art Files: <div class='d-inline' *ngFor="let item of order.order_arts; let j = index"><a class="btn btn-success" target="_blank" [href]='item.file_url'>
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                  </a></div></div>
+               
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </ng-container>
+
+
+<!-- 
+  <div
+    class="container-fluid parent"
+    *ngIf="multipleProducts.length > 0"
+    style="margin-top: 65px"
+  >
+    <div
+      class="row w-100 pt-5"
+      style="margin-left: 0"
+      *ngFor="let order of multipleProducts; let i = index"
+    >
+      <div class="col-md-6">
+        <div class="row orderBar shit">
+          <div class="col-md-4 orderid">
+            {{ order.id }}
+          </div>
+          <div class="col-md-4">
+            {{ order.customer_name }}
+          </div>
+          <div class="col-md-4">
+            {{ order.name }}
+          </div>
+          <div class="col-md-4">
+            {{ order.created_at | date }}
+          </div>
+          <div class="col-md-4">
+            {{ order.arrival_date | date }}
+          </div>
+          <div class="col-md-4">
+            {{ order.printer ? order.printer.title : null }} <br />
+            {{ order.printer_schedule }}
+          </div>
+        </div>
+
+        <div
+          class="row countBar mt-3 mb-3 text-center shit"
+          style="padding: 25px 0 25px 0 !important; font-size: larger"
+        >
+          Count: {{ order.total_product_count }}
+        </div>
+
+        <div *ngFor="let item of order.products; let i = index" class="mt-3">
+          <div class="row productBar shit">
+            <div class="col">
+              {{
+                item["product_user_type_" + (i + 1)]
+                  ? item["product_user_type_" + (i + 1)]
+                  : ""
+              }}
+            </div>
+            <div class="col">
+              {{
+                item["apparel_type_" + (i + 1)]
+                  ? item["apparel_type_" + (i + 1)]
+                  : ""
+              }}
+            </div>
+            <div class="col">
+              {{
+                item["product_color_" + (i + 1)]
+                  ? item["product_color_" + (i + 1)]
+                  : ""
+              }}
+            </div>
+            <div class="col-md-5">
+              {{
+                item["product_description_" + (i + 1)]
+                  ? item["product_description_" + (i + 1)]
+                  : ""
+              }}
+            </div>
+          </div>
+          <div class="row sizeBar shit">
+            <div class="col">
+              <span *ngIf="item['xs_' + (i + 1)]">
+                <strong>XS:</strong>
+                {{ item["xs_" + (i + 1)] ? item["xs_" + (i + 1)] : "-" }}</span
+              >
+              <span *ngIf="item['s_' + (i + 1)]"
+                ><strong>S:</strong>
+                {{ item["s_" + (i + 1)] ? item["s_" + (i + 1)] : "-" }}</span
+              >
+              <span *ngIf="item['m_' + (i + 1)]"
+                ><strong>M:</strong>
+                {{ item["m_" + (i + 1)] ? item["m_" + (i + 1)] : "-" }}</span
+              >
+              <span *ngIf="item['l_' + (i + 1)]"
+                ><strong>L:</strong>
+                {{ item["l_" + (i + 1)] ? item["l_" + (i + 1)] : "-" }}</span
+              >
+              <span *ngIf="item['xl_' + (i + 1)]"
+                ><strong>XL:</strong>
+                {{ item["xl_" + (i + 1)] ? item["xl_" + (i + 1)] : "-" }}</span
+              >
+              <span *ngIf="item['xxl_' + (i + 1)]"
+                ><strong>XXL:</strong>
+                {{
+                  item["xxl_" + (i + 1)] ? item["xxl_" + (i + 1)] : "-"
+                }}</span
+              >
+              <span *ngIf="item['xxxl_' + (i + 1)]"
+                ><strong>XXXL:</strong>
+                {{
+                  item["xxxl_" + (i + 1)] ? item["xxxl_" + (i + 1)] : "-"
+                }}</span
+              >
+              <span *ngIf="item['other_size_1_' + (i + 1)]"
+                ><strong>{{
+                  item["other_size_1_" + (i + 1)]
+                    ? item["other_size_1_" + (i + 1)] + ":"
+                    : "OS1:"
+                }}</strong>
+                {{
+                  item["pcs_1_" + (i + 1)] ? item["pcs_1_" + (i + 1)] : "-"
+                }}</span
+              >
+              <span *ngIf="item['other_size_2_' + (i + 1)]"
+                ><strong>
+                  {{
+                    item["other_size_2_" + (i + 1)]
+                      ? item["other_size_2_" + (i + 1)] + ":"
+                      : "OS2:"
+                  }}
+                </strong>
+                {{
+                  item["pcs_2_" + (i + 1)] ? item["pcs_2_" + (i + 1)] : "-"
+                }}</span
+              >
+              <span *ngIf="item['other_size_3_' + (i + 1)]"
+                ><strong>
+                  {{
+                    item["other_size_3_" + (i + 1)]
+                      ? item["other_size_3_" + (i + 1)] + ":"
+                      : "OS3:"
+                  }}
+                </strong>
+                {{
+                  item["pcs_3_" + (i + 1)] ? item["pcs_3_" + (i + 1)] : "-"
+                }}</span
+              >
+              <span *ngIf="item['other_size_4_' + (i + 1)]"
+                ><strong>{{
+                  item["other_size_4_" + (i + 1)]
+                    ? item["other_size_4_" + (i + 1)] + ":"
+                    : "OS4:"
+                }}</strong>
+                {{
+                  item["pcs_4_" + (i + 1)] ? item["pcs_4_" + (i + 1)] : "-"
+                }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="row">
+          <div class="col-md-6 shit">
+            <div class="colorBar">
+              <div class="row shit">
+                <div class="col">
+                  <div class="pciked-color">
+                    <span
+                      [ngStyle]="{ 'background-color': order.color_1 }"
+                    ></span>
+                    <strong>{{ order.color_1_pantone }}</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="pciked-color">
+                    <span
+                      [ngStyle]="{ 'background-color': order.color_2 }"
+                    ></span>
+                    <strong>{{ order.color_2_pantone }}</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="pciked-color">
+                    <span
+                      [ngStyle]="{ 'background-color': order.color_3 }"
+                    ></span>
+                    <strong>{{ order.color_3_pantone }}</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="row shit">
+                <div class="col">
+                  <div class="pciked-color">
+                    <span
+                      [ngStyle]="{ 'background-color': order.color_4 }"
+                    ></span>
+                    <strong>{{ order.color_4_pantone }}</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="pciked-color">
+                    <span
+                      [ngStyle]="{ 'background-color': order.color_5 }"
+                    ></span>
+                    <strong>{{ order.color_5_pantone }}</strong>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="pciked-color">
+                    <span
+                      [ngStyle]="{ 'background-color': order.color_6 }"
+                    ></span>
+                    <strong>{{ order.color_6_pantone }}</strong>
+                  </div>
+                </div>
+              </div>
+              <div class="row shit" style="font-size: large">
+                <div class="col">
+                  {{ order.type }}
+                </div>
+                <div class="col-5">
+                  {{ order.color_notes }}
+                </div>
+                <div class="col">
+                  <input
+                    type="checkbox"
+                    id="proof"
+                    [checked]="order.match_proof_position == 1 ? true : false"
+                    disabled="disabled"
+                  />&nbsp;
+                  <label for="proof">Match Proof</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 shit">
+            <div class="placementBar" style="font-size: x-large">
+              <div class="row shit">
+                <div class="col">
+                  <strong>Front: </strong
+                  ><span
+                    style="
+                      font-size: 20px;
+                      color: black;
+                      font-weight: bold;
+                      margin-left: 10px;
+                    "
+                    >{{ order.position_front }}</span
+                  >
+                </div>
+                <div class="col">
+                  <strong>Back: </strong
+                  ><span
+                    style="
+                      font-size: 20px;
+                      color: black;
+                      font-weight: bold;
+                      margin-left: 10px;
+                    "
+                    >{{ order.position_back }}</span
+                  >
+                </div>
+              </div>
+              <div class="row shit" style="font-size: x-large">
+                <div class="col">
+                  <strong>Right: </strong
+                  ><span
+                    style="
+                      font-size: 20px;
+                      color: black;
+                      font-weight: bold;
+                      margin-left: 10px;
+                    "
+                    >{{ order.position_right_left }}</span
+                  >
+                </div>
+                <div class="col">
+                  <strong>Left: </strong
+                  ><span
+                    style="
+                      font-size: 20px;
+                      color: black;
+                      font-weight: bold;
+                      margin-left: 10px;
+                    "
+                    >{{ order.position_right_left }}</span
+                  >
+                </div>
+              </div>
+              <div class="row shit" style="font-size: large">
+                <div class="col">
+                  {{ order.position_notes }}
+                </div>
+
+                <div class="col">
+                  <input
+                    type="checkbox"
+                    id="proof"
+                    [checked]="order.match_proof_position == 1 ? true : false"
+                    disabled="disabled"
+                  />&nbsp;
+                  <label for="proof">Match Proof</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3 imageBar shit">
+          <div
+            class="col-md-12"
+            style="height: 775px; background: white; border: 1px solid #e0e0e0"
+          >
+            <a href="{{ order.proof_url }}" target="blank"
+              ><img
+                style="height: 100%; display: block; margin: 0px auto"
+                src="{{ order.proof_url }}"
+                alt=""
+            /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <br /><br /><br />
+</div>
+<!-- Main Wrap -->
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModalLong"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="exampleModalLongTitle"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header px-5">
+        <h5 class="modal-title" id="exampleModalLongTitle">Account Settings</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body px-5">
+        <div class="float-left w-100">
+          <div class="row">
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">First Name</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Last Name</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Contact Number</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Email</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Address</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">City</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">State</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Zipcode</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-12">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button type="button" class="btn btn-primary">Save</button>
+            </div>
+            <div class="col-lg-12">
+              <hr class="float-left w-100" />
+            </div>
+            <div class="col-lg-12">
+              <h6>Shipping Information</h6>
+            </div>
+            <div class="col-lg-12 mb-4">
+              <label class="mb-2">Email</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Name</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">AddressSte/Apt</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Ste/Apt</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">City</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">State</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+              <label class="mb-2">Zipcode</label>
+              <div class="c-input">
+                <input type="text" placeholder="" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

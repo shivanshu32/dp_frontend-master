@@ -1,0 +1,13 @@
+<div class="main-wrap">
+    <app-navbar></app-navbar>
+    <div class="section-wrap pb-3 float-left w-100">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 text-center">
+                <div id="shipping_label_list" class="mt-4"></div>
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+        <ngx-loading [show]="isLoading" [config]="{ backdropBorderRadius: '3px', primaryColour: '#006ddd' }"></ngx-loading>
+    </div>
+</div>

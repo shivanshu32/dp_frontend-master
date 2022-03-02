@@ -1,0 +1,44 @@
+<div class="body_wrap">
+    <div class="side-left">
+        <div class="form-sec">
+            <div class="logo">
+                <a href="javascript:;" routerLink="/login" title=""><img src="assets/images/logo.png" alt=""></a>
+            </div>
+            <h1>Forgot Password</h1>
+            <p>Enter your email address associated with your account</p>
+            <form (submit)="submit()" [formGroup]="form">
+                <div class="from-fields">
+                    <label for="email">Email Address</label>
+                    <input type="email" formControlName="email" placeholder="admin@admin.com" id="email">
+                    <label class="text-left text-danger mt-2" *ngIf="!form.controls.email.valid && (form.controls.email.dirty || form.controls.email.touched)">A valid email is required</label>
+                </div>
+
+                <div class="from-fields">
+                    <button type="submit" [disabled]="!form.valid" class="btn btn-large" type="submit">Reset Password<span *ngIf="isLoading">&nbsp;<i class="fa fa-spinner fa-spin"></i></span></button>
+                </div>
+            </form>
+            <div class="have-account">
+                <span><a href="javascript:;" routerLink="/login" title="">Back to Login</a></span>
+            </div>
+
+        </div>
+    </div>
+    <div class="side-right">
+        <h3>We are committed to delivering a high quality product at a low and affordable price.</h3>
+        <img src="assets/images/resource/mockup.png" alt="">
+        <div class="account-bottom">
+            <div class="float-left w-100">
+                <div class="quick-acount-info">
+                    <h4>Contact Us</h4>
+                    <span>(310) 916 - 9514</span>
+                    <span>support@districtprinting.com</span>
+                </div>
+                <div class="quick-acount-info">
+                    <h4>Monday - Friday</h4>
+                    <span>9am - 5pm (BY APPOINTMENT ONLY)</span>
+                    <span>4722 Normandie Ave Los Angeles, CA 90037</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Body Wrap -->

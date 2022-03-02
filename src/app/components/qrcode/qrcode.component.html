@@ -1,0 +1,69 @@
+<div class="main-wrap">
+    <!-- <div class="text-center mt-5" ><span><i class="fa fa-spinner fa-spin fa-2x"></i></span></div> -->
+
+    
+    
+    <section><br><br>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 text-center" id="qrcode_page">
+                    <h1>Printing PDF... Please Wait. <button id="print_qr" class="btn btn-dark btn-lg">Reprint</button></h1>
+                </div>
+                <div class="col-sm-12" id="qrcode_container">
+                    <iframe src="" id="full_scope"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+</div><!-- Main Wrap -->
+
+<div class="modal modal-lg" id="qrCodeDialog" tabindex="-1" role="dialog" aria-labelledby="shipstationTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header px-5">
+                <h5 class="modal-title" id="qrCodeTitle">Codes</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body px-5">
+                <div class="centered-box" id="pdfContainer">
+                    <div class="row" *ngIf="qrIDString && qrURLString">
+                        <div class="col-lg-12 text-center">
+                            <h1 class="fa-4x font-weight-bold">#{{orderId}} <span id='order_name'>{{orderName}}</span></h1>
+                        </div>
+                    </div>
+                    <div class="row p-2">
+                        <div class="col-lg-4 text-center">
+                            <div class="code" *ngIf="qrURLString">
+                                <qrcode elementType="img" [qrdata]="qrURLString" [width]="250"></qrcode>
+                                <span class="font-weight-bold">View</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div class="code" *ngIf="qrIDString">
+                                <qrcode elementType="img" [qrdata]="qrIDString" [width]="250"></qrcode>
+                                <span class="font-weight-bold">Dashboard</span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 text-center">
+                            <div class="code" *ngIf="qrURLShippingString">
+                                <qrcode elementType="img" [qrdata]="qrURLShippingString" [width]="250"></qrcode>
+                                <span class="font-weight-bold">Ship</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 text-right mt-2">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
